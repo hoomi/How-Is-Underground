@@ -1,14 +1,9 @@
 package com.blackberry.howisundergroundtoday;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -22,13 +17,9 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -36,25 +27,21 @@ import android.widget.Toast;
 
 public class SplashScreen extends Activity {
 
-	private final String LASTIMEDOWNLOADKEY = "last_time_download";
+
 	private ProgressBar splashProgressBar;
 	private TextView splashProgressStatus;
 	private UndergroundApplication application;
-	private String cachePath = "";
-	private long lastTimeDownload;
-	private SharedPreferences sp;
+	private final String cachePath = "";
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		cachePath = getCacheDir() + "/xmlCache.xml";
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splashscreen);
 		application = (UndergroundApplication) getApplicationContext();
 		splashProgressBar = (ProgressBar) findViewById(R.id.splash_progressbar);
 		splashProgressStatus = (TextView) findViewById(R.id.splashstatus_textview);
-		sp = getSharedPreferences("How_Is_Underground", Context.MODE_PRIVATE);
-		lastTimeDownload = sp.getLong(LASTIMEDOWNLOADKEY, 0);
 		new SplashScreenPlayer().execute();
 	}
 
@@ -117,11 +104,11 @@ public class SplashScreen extends Activity {
 		protected Boolean doInBackground(Void... params) {
 			boolean useCache = false;
 			try {
-				if (checkInternetConnection()) {
-					useCache = isThereAnyCache() ? true : false;
+				if (application.checkInternetConnection()) {
+					useCache = application.isThereAnyCache() ? true : false;
 					publishProgress(1);
 				} else {
-					if (!isThereAnyCache()) {
+					if (!application.isThereAnyCache()) {
 						publishProgress(10);
 						return false;
 					} else {
@@ -154,25 +141,13 @@ public class SplashScreen extends Activity {
 
 	}
 
-	/**
-	 * Checks whether the device is connected to the internet or not
-	 * @return true if the device is connected to the internet and false otherwise
-	 */
-	private boolean checkInternetConnection() {
-		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-		if (cm.getActiveNetworkInfo() == null
-				|| !cm.getActiveNetworkInfo().isConnected())
-			return false;
-		return true;
-	}
-
 	public Document XMLfromString(String url, boolean useCache) {
 		Document doc;
 		URI uri;
 		String cacheURI;
 		try {
 			if (!useCache) {
-				cacheURI = downloadAndCache(url);
+				cacheURI = application.downloadAndCache(url);
 			} else {
 				cacheURI = "file://" + cachePath;
 			}
@@ -193,17 +168,15 @@ public class SplashScreen extends Activity {
 		} catch (SAXException e) {
 			e.printStackTrace();
 		}
-
 		return null;
-
 	}
-
+	
 	/**
 	 * Creates an array of Line object from the xmlDoc
 	 * @param xmlDoc
 	 * @return an array of Line Objects
 	 */
-	private ArrayList<LineObject> extractLinesFromDocument(Document doc) {
+	public ArrayList<LineObject> extractLinesFromDocument(Document doc) {
 		ArrayList<LineObject> lines = new ArrayList<LineObject>();
 		NodeList lineStatus = doc.getElementsByTagName("Status");
 		NodeList lineNames = doc.getElementsByTagName("Line");
@@ -223,56 +196,5 @@ public class SplashScreen extends Activity {
 		}
 
 		return lines;
-	}
-
-	/**
-	 * Downloads the xml from the server and caches it in a file
-	 * @param remoteUrl server Url
-	 * @return returns the path to the cached file
-	 * @throws IOException
-	 */
-	private String downloadAndCache(String stringUrl) throws IOException {
-		InputStream is;
-		File cacheFile;
-		OutputStream os;
-		SharedPreferences.Editor editor = sp.edit();
-		final byte[] buffer = new byte[1024];
-		URL url;
-		url = new URL(stringUrl);
-		cacheFile = new File(cachePath);
-		if (cacheFile.exists()) {
-			cacheFile.delete();
-		}
-		cacheFile = new File(cachePath);
-		os = new FileOutputStream(cacheFile);
-		is = new InputSource(url.openStream()).getByteStream();
-		int read;
-		while ((read = is.read(buffer)) != -1) {
-			os.write(buffer, 0, read);
-		}
-		os.flush();
-		is.close();
-		os.close();
-		editor.putLong(LASTIMEDOWNLOADKEY, System.currentTimeMillis());
-		editor.commit();
-		return "file://" + cachePath;
-	}
-
-	/**
-	 * Checks whether there is a valid cache file. It ha to be downloaded less than 5 minutes ago
-	 * @return true if cache file exists and false otherwise
-	 */
-	private boolean isThereAnyCache() {
-		SharedPreferences.Editor editor = sp.edit();
-		File file = new File(cachePath);
-		Log.i("TAG", "difference: " + (System.currentTimeMillis() - lastTimeDownload) + " file exists: " + file.exists());
-		if (file.exists()
-				&& (System.currentTimeMillis() - lastTimeDownload) < 5 * 60 * 1000) {
-			return true;
-		}
-		file.delete();
-		editor.remove(LASTIMEDOWNLOADKEY);
-		editor.commit();
-		return false;
 	}
 }

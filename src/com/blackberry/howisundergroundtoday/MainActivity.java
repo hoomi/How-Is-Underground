@@ -1,22 +1,13 @@
 package com.blackberry.howisundergroundtoday;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -37,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	/** Called when the activity is first created. */
@@ -45,19 +37,21 @@ public class MainActivity extends Activity {
 	private ArrayList<LineObject> lines;
 	private LineAdapter myAdapter;
 	private Timer updateTimer = null;
-	private final MyUpdateHandler handler = new MyUpdateHandler();
+	private MyUpdateHandler handler;
 	private NodeList lineNames;
 	private NodeList lineStatus;
 	private NodeList lineLineStatus;
 	private UndergroundApplication application;
 
 	private final int NEW_UPDATE_ARRIVED = 1;
+	private final int NOTIFY_USER = 2;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		application = (UndergroundApplication) getApplicationContext();
+		handler = new MyUpdateHandler(this);
 		linesList = (ListView) findViewById(R.id.linesList);
 		lines = application.getLines();
 		myAdapter = new LineAdapter(this, R.layout.line_row, lines);
@@ -147,7 +141,20 @@ public class MainActivity extends Activity {
 
 		@Override
 		public void run() {
-			Document doc = XMLfromString();
+			Document doc;
+			if (application.checkInternetConnection()) {
+				if (!application.isThereAnyCache()){
+					doc = application.XMLfromString("http://cloud.tfl.gov.uk/TrackerNet/LineStatus",true);
+				} else {
+					return;
+				}
+			} else {
+				Message msg = new Message();
+				msg.what = NOTIFY_USER;
+				msg.obj = getString(R.string.internet_connection_unavailable_string);
+				handler.sendMessage(msg);
+				return;
+			}
 			if (doc != null) {
 				lineStatus = doc.getElementsByTagName("Status");
 				lineNames = doc.getElementsByTagName("Line");
@@ -177,12 +184,19 @@ public class MainActivity extends Activity {
 	};
 
 	private class MyUpdateHandler extends Handler {
-
+		private final Context context;
+		public MyUpdateHandler (Context context) {
+			this.context = context;
+		}
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case NEW_UPDATE_ARRIVED:
 				myAdapter.notifyDataSetChanged();
+				break;
+			case NOTIFY_USER :
+				Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show();
+				break;
 			}
 		}
 
@@ -255,35 +269,6 @@ public class MainActivity extends Activity {
 		View background;
 	}
 
-	public Document XMLfromString() {
-		Document doc;
-		URL url;
-		try {
-			url = new URL("http://cloud.tfl.gov.uk/TrackerNet/LineStatus");
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			doc = db.parse(new InputSource(url.openStream()));
-			doc.getDocumentElement().normalize();
-			return doc;
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// URL url = new URL(myUrl);
-		catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-
-	}
 
 	private int getColor(int lineID) {
 		switch (lineID) {
