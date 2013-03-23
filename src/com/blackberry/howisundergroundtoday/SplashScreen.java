@@ -154,6 +154,10 @@ public class SplashScreen extends Activity {
 
 	}
 
+	/**
+	 * Checks whether the device is connected to the internet or not
+	 * @return true if the device is connected to the internet and false otherwise
+	 */
 	private boolean checkInternetConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
 		if (cm.getActiveNetworkInfo() == null
@@ -194,6 +198,11 @@ public class SplashScreen extends Activity {
 
 	}
 
+	/**
+	 * Creates an array of Line object from the xmlDoc
+	 * @param xmlDoc
+	 * @return an array of Line Objects
+	 */
 	private ArrayList<LineObject> extractLinesFromDocument(Document doc) {
 		ArrayList<LineObject> lines = new ArrayList<LineObject>();
 		NodeList lineStatus = doc.getElementsByTagName("Status");
@@ -216,6 +225,12 @@ public class SplashScreen extends Activity {
 		return lines;
 	}
 
+	/**
+	 * Downloads the xml from the server and caches it in a file
+	 * @param remoteUrl server Url
+	 * @return returns the path to the cached file
+	 * @throws IOException
+	 */
 	private String downloadAndCache(String stringUrl) throws IOException {
 		InputStream is;
 		File cacheFile;
@@ -243,6 +258,10 @@ public class SplashScreen extends Activity {
 		return "file://" + cachePath;
 	}
 
+	/**
+	 * Checks whether there is a valid cache file. It ha to be downloaded less than 5 minutes ago
+	 * @return true if cache file exists and false otherwise
+	 */
 	private boolean isThereAnyCache() {
 		SharedPreferences.Editor editor = sp.edit();
 		File file = new File(cachePath);
