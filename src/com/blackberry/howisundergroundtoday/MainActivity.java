@@ -36,7 +36,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -79,19 +78,20 @@ public class MainActivity extends Activity {
 			final LineObject line) {
 		final View lineStatus = theViewToBeAnimated
 				.findViewById(R.id.linestatustextview);
-		final View lineWrapper = theViewToBeAnimated
-				.findViewById(R.id.linewrapperrelativelayout);
+		final View lineName = theViewToBeAnimated
+				.findViewById(R.id.linenametextview);
 		final boolean flipped = line.isLineShowingStatus();
 		float startingDegree = flipped ? 180 : 0;
 		float endingDegree = flipped ? 0 : 180;
 		float startingAlpha = flipped ? 1 : 0;
 		float endingAlpha = flipped ? 0 : 1;
 		AnimatorSet animSet = new AnimatorSet();
-		animSet.playTogether(
-				ObjectAnimator.ofFloat(lineWrapper, View.ROTATION_X, startingDegree, endingDegree),
-				ObjectAnimator.ofFloat(lineStatus, View.ROTATION_X, endingDegree, startingDegree),
-				ObjectAnimator.ofFloat(lineStatus, View.ALPHA, startingAlpha, endingAlpha), 
-				ObjectAnimator.ofFloat(lineWrapper, View.ALPHA, endingAlpha, startingAlpha));
+		animSet.playTogether(ObjectAnimator.ofFloat(lineName, View.ROTATION_X,
+				startingDegree, endingDegree), ObjectAnimator.ofFloat(
+				lineStatus, View.ROTATION_X, endingDegree, startingDegree),
+				ObjectAnimator.ofFloat(lineName, View.ALPHA, endingAlpha,
+						startingAlpha), ObjectAnimator.ofFloat(lineStatus,
+						View.ALPHA, startingAlpha, endingAlpha));
 		animSet.setDuration(1000);
 		animSet.setInterpolator(new DecelerateInterpolator());
 		animSet.addListener(new AnimatorListenerAdapter() {
@@ -104,6 +104,9 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onAnimationEnd(Animator animation) {
+				if (!flipped) {
+
+				}
 				line.setLineShowingStatus(!flipped);
 			}
 
@@ -111,10 +114,9 @@ public class MainActivity extends Activity {
 			public void onAnimationStart(Animator animation) {
 				if (flipped) {
 					lineStatus.setVisibility(View.GONE);
-					lineWrapper.setVisibility(View.VISIBLE);
+					lineName.setVisibility(View.VISIBLE);
 				} else {
 					lineStatus.setVisibility(View.VISIBLE);
-					lineWrapper.setVisibility(View.GONE);
 				}
 				super.onAnimationStart(animation);
 			}
@@ -185,58 +187,71 @@ public class MainActivity extends Activity {
 
 	}
 
+	static ViewHolder holder;
+
 	private class LineAdapter extends ArrayAdapter<LineObject> {
 
 		public LineAdapter(Context context, int textViewResourceId,
 				List<LineObject> objects) {
 			super(context, textViewResourceId, objects);
-			// TODO Auto-generated constructor stub
 		}
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ImageView lineStatusImage;
-			TextView lineName, lineStatus;
-			RelativeLayout lineBackground;
-			View v = convertView;
-
-			if (v == null) {
-				v = getLayoutInflater().inflate(R.layout.line_row, null, false);
+			if (convertView == null) {
+				convertView = getLayoutInflater().inflate(R.layout.line_row,
+						null, false);
+				holder = new ViewHolder();
+				holder.lineName = (TextView) convertView
+						.findViewById(R.id.linenametextview);
+				holder.lineStatus = (TextView) convertView
+						.findViewById(R.id.linestatustextview);
+				holder.logo = (ImageView) convertView
+						.findViewById(R.id.linestatusimageview);
+				holder.background = convertView
+						.findViewById(R.id.linebackground);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
 			}
 			LineObject lo = getItem(position);
-			lineStatusImage = (ImageView) v
-					.findViewById(R.id.linestatusimageview);
-			lineName = (TextView) v.findViewById(R.id.linenametextview);
-			lineStatus = (TextView) v.findViewById(R.id.linestatustextview);
-			lineBackground = (RelativeLayout) v
-					.findViewById(R.id.linebackground);
-			if (lineStatusImage != null) {
-				if (lo.getLineStatus().equals("Good Service")) {
-					lineStatusImage.setImageResource(R.drawable.smileyface);
-
-				} else if (lo.getLineStatus().equals("Severe Delays")
-						|| lo.getLineStatus().equals("Part Closure")) {
-					lineStatusImage.setImageResource(R.drawable.sadface2);
-
-				} else if (lo.getLineStatus().equals("Minor Delays")) {
-					lineStatusImage.setImageResource(R.drawable.sadface);
-				} else {
-					lineStatusImage.setImageResource(R.drawable.normalface);
-				}
+			if (lo.getLineStatus().equals("Good Service")) {
+				holder.logo.setImageResource(R.drawable.smileyface);
+			} else if (lo.getLineStatus().equals("Severe Delays")
+					|| lo.getLineStatus().equals("Part Closure")) {
+				holder.logo.setImageResource(R.drawable.sadface2);
+			} else if (lo.getLineStatus().equals("Minor Delays")) {
+				holder.logo.setImageResource(R.drawable.sadface);
+			} else {
+				holder.logo.setImageResource(R.drawable.normalface);
 			}
-			if (lineName != null) {
-				lineName.setText(lo.getLineName());
+			holder.lineName.setText(lo.getLineName());
+			holder.lineStatus.setText(lo.getLineStatusDetails().equals("") ? lo.getLineStatus() : lo.getLineStatusDetails());
+			holder.background.setBackgroundColor(getResources().getColor(getColor(lo.getLineID())));
+			if (lo.isLineShowingStatus()) {
+				holder.lineStatus.setVisibility(View.VISIBLE);
+				holder.lineName.setVisibility(View.GONE);
+				holder.lineName.setAlpha(0);
+				holder.lineStatus.setAlpha(1);
+				holder.lineName.setRotationX(180);
+				holder.lineStatus.setRotationX(0);
+			} else {
+				holder.lineName.setAlpha(1);
+				holder.lineStatus.setAlpha(0);
+				holder.lineStatus.setVisibility(View.GONE);
+				holder.lineName.setVisibility(View.VISIBLE);
+				holder.lineName.setRotationX(0);
+				holder.lineStatus.setRotationX(180);
 			}
-			if (lineStatus != null) {
-				lineStatus.setText(lo.getLineStatusDetails().equals("") ? lo
-						.getLineStatus() : lo.getLineStatusDetails());
-			}
-			if (lineBackground != null) {
-				lineBackground.setBackgroundColor(getResources().getColor(
-						getColor(lo.getLineID())));
-			}
-			return v;
+			convertView.setTag(holder);
+			return convertView;
 		}
+
+	}
+
+	static class ViewHolder {
+		TextView lineName, lineStatus;
+		ImageView logo;
+		View background;
 	}
 
 	public Document XMLfromString() {
