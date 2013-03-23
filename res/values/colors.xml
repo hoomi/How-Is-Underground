@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<color name="dlr_color">#00fab2</color>
+<color name="ove_color">#ffa000</color> 
+<color name="pic_color">#0019a8</color>
+<color name="bak_color">#894e24</color>
+<color name="cen_color">#dc241f</color>
+<color name="cir_color">#ffce00</color>
+<color name="dis_color">#007229</color>
+<color name="ham_color">#d799af</color>
+<color name="jub_color">#868F98</color>
+<color name="met_color">#751056</color>
+<color name="nor_color">#000000</color>
+<color name="vic_color">#00a0e2</color>
+<color name="wat_color">#76d0bd</color>
+<color name="white">#ffffffff</color>
+    
+</resources>

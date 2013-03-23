@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">How is Undeground today?</string>
+    <string name="cancelled">Cancelled</string>
+    <string name="internet_connection_check">Checking internet connection</string>
+    <string name="contacting_tfl">Connecting...</string>
+    <string name="preparing_linestatus">Preparing....</string>
+    <string name="error_occured">An Error Occured</string>
+    <string name="sucessful_download">Finished!!!!</string>
+
+</resources>
