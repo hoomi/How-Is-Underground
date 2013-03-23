@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
 	private ListView linesList;
 	private ArrayList<LineObject> lines;
 	private LineAdapter myAdapter;
-	private Timer updateTimer;
+	private Timer updateTimer = null;
 	private final MyUpdateHandler handler = new MyUpdateHandler();
 	private NodeList lineNames;
 	private NodeList lineStatus;
@@ -62,8 +62,6 @@ public class MainActivity extends Activity {
 		lines = application.getLines();
 		myAdapter = new LineAdapter(this, R.layout.line_row, lines);
 		linesList.setAdapter(myAdapter);
-		updateTimer = new Timer();
-
 		linesList.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -130,6 +128,9 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
+		if ( updateTimer == null) {
+			updateTimer = new Timer();
+		}
 		updateTimer.scheduleAtFixedRate(myTimerTask, 10 * 60 * 1000,
 				10 * 60 * 1000);
 	}
@@ -139,13 +140,13 @@ public class MainActivity extends Activity {
 		super.onStop();
 		if (updateTimer != null)
 			updateTimer.cancel();
+			updateTimer = null;
 	}
 
 	private final TimerTask myTimerTask = new TimerTask() {
 
 		@Override
 		public void run() {
-			// Document doc = XMLfromString(getXML());
 			Document doc = XMLfromString();
 			if (doc != null) {
 				lineStatus = doc.getElementsByTagName("Status");
