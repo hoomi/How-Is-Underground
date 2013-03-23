@@ -18,21 +18,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
-import android.content.DialogInterface.OnShowListener;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -43,7 +41,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	/** Called when the activity is first created. */
-
+	private final static String TAG = "MainActivity";
 	private ListView linesList;
 	private ArrayList<LineObject> lines;
 	private LineAdapter myAdapter;
@@ -72,10 +70,57 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				showDetailsDialog(arg2);
-
+				flipTheView(arg1, (LineObject) arg0.getItemAtPosition(arg2));
 			}
 		});
+	}
+
+	private void flipTheView(final View theViewToBeAnimated,
+			final LineObject line) {
+		final View lineStatus = theViewToBeAnimated
+				.findViewById(R.id.linestatustextview);
+		final View lineWrapper = theViewToBeAnimated
+				.findViewById(R.id.linewrapperrelativelayout);
+		final boolean flipped = line.isLineShowingStatus();
+		float startingDegree = flipped ? 180 : 0;
+		float endingDegree = flipped ? 0 : 180;
+		float startingAlpha = flipped ? 1 : 0;
+		float endingAlpha = flipped ? 0 : 1;
+		AnimatorSet animSet = new AnimatorSet();
+		animSet.playTogether(
+				ObjectAnimator.ofFloat(lineWrapper, View.ROTATION_X, startingDegree, endingDegree),
+				ObjectAnimator.ofFloat(lineStatus, View.ROTATION_X, endingDegree, startingDegree),
+				ObjectAnimator.ofFloat(lineStatus, View.ALPHA, startingAlpha, endingAlpha), 
+				ObjectAnimator.ofFloat(lineWrapper, View.ALPHA, endingAlpha, startingAlpha));
+		animSet.setDuration(1000);
+		animSet.setInterpolator(new DecelerateInterpolator());
+		animSet.addListener(new AnimatorListenerAdapter() {
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+
+				super.onAnimationCancel(animation);
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				line.setLineShowingStatus(!flipped);
+			}
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+				if (flipped) {
+					lineStatus.setVisibility(View.GONE);
+					lineWrapper.setVisibility(View.VISIBLE);
+				} else {
+					lineStatus.setVisibility(View.VISIBLE);
+					lineWrapper.setVisibility(View.GONE);
+				}
+				super.onAnimationStart(animation);
+			}
+
+		});
+		animSet.start();
 	}
 
 	AnimationDrawable animation;
@@ -92,86 +137,6 @@ public class MainActivity extends Activity {
 		super.onStop();
 		if (updateTimer != null)
 			updateTimer.cancel();
-	}
-
-	private void showDetailsDialog(int position) {
-		animation = null;
-		final Dialog dialog = new Dialog(this);
-		dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		dialog.setContentView(R.layout.detailsdialog);
-		final LineObject lo = myAdapter.getItem(position);
-		TextView message = (TextView) dialog
-				.findViewById(R.id.message_textview);
-		if (lo.getLineStatusDetails() != null
-				&& !lo.getLineStatusDetails().equals(""))
-			message.setText(lo.getLineStatusDetails());
-		else
-			message.setText(lo.getLineStatus());
-		dialog.getWindow().getAttributes().windowAnimations = R.style.DetailsDialog;
-		dialog.getWindow().setLayout(LayoutParams.WRAP_CONTENT,
-				LayoutParams.WRAP_CONTENT);
-		if (lo.getLineStatus().equals("Good Service"))
-			((ImageView) dialog.findViewById(R.id.dialog_imageview))
-					.setImageResource(R.drawable.smileyface);
-		else if (lo.getLineStatus().equals("Severe Delays")
-				|| lo.getLineStatus().equals("Part Closure")) {
-			ImageView iv = (ImageView) dialog
-					.findViewById(R.id.dialog_imageview);
-
-			iv.setImageResource(R.drawable.sadfaceanim);
-			animation = (AnimationDrawable) iv.getDrawable();
-
-		} else
-			((ImageView) dialog.findViewById(R.id.dialog_imageview))
-					.setImageResource(R.drawable.normalface);
-		dialog.findViewById(R.id.dialogrootview).setBackgroundColor(
-				getResources().getColor(getColor(lo.getLineID())));
-		dialog.setOnCancelListener(new OnCancelListener() {
-
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				if (animation != null)
-					animation.stop();
-
-			}
-		});
-		dialog.setOnDismissListener(new OnDismissListener() {
-
-			@Override
-			public void onDismiss(DialogInterface dialog) {
-				if (animation != null)
-					animation.stop();
-
-			}
-		});
-		dialog.setOnShowListener(new OnShowListener() {
-
-			@Override
-			public void onShow(DialogInterface dialogi) {
-				if (lo.getLineStatus().equals("Good Service")) {
-					ImageView iv = (ImageView) dialog
-							.findViewById(R.id.dialog_imageview);
-					iv.setImageResource(R.drawable.happyface);
-					animation = (AnimationDrawable) iv.getDrawable();
-				} else if (lo.getLineStatus().equals("Severe Delays")
-						|| lo.getLineStatus().equals("Part Closure")) {
-					ImageView iv = (ImageView) dialog
-							.findViewById(R.id.dialog_imageview);
-
-					iv.setImageResource(R.drawable.sadfaceanim);
-					animation = (AnimationDrawable) iv.getDrawable();
-
-				} else
-					((ImageView) dialog.findViewById(R.id.dialog_imageview))
-							.setImageResource(R.drawable.normalface);
-				if (animation != null)
-					animation.start();
-
-			}
-		});
-
-		dialog.show();
-
 	}
 
 	private final TimerTask myTimerTask = new TimerTask() {
@@ -194,7 +159,8 @@ public class MainActivity extends Activity {
 					lo = new LineObject(nameElement.getAttribute("Name"),
 							statusElement.getAttribute("Description"),
 							R.drawable.ic_launcher);
-					lo.setLineID(Integer.parseInt(nameElement.getAttribute("ID")));
+					lo.setLineID(Integer.parseInt(nameElement
+							.getAttribute("ID")));
 					lo.setLineStatusDetails(lineStatusElement
 							.getAttribute("StatusDetails"));
 					lines.add(lo);
@@ -230,34 +196,40 @@ public class MainActivity extends Activity {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			ImageView lineStatusImage;
-			TextView lineName;
-			AnimationDrawable anim;
+			TextView lineName, lineStatus;
 			RelativeLayout lineBackground;
 			View v = convertView;
 
-			if (v == null)
+			if (v == null) {
 				v = getLayoutInflater().inflate(R.layout.line_row, null, false);
+			}
 			LineObject lo = getItem(position);
 			lineStatusImage = (ImageView) v
 					.findViewById(R.id.linestatusimageview);
 			lineName = (TextView) v.findViewById(R.id.linenametextview);
+			lineStatus = (TextView) v.findViewById(R.id.linestatustextview);
 			lineBackground = (RelativeLayout) v
 					.findViewById(R.id.linebackground);
-			if (lineStatusImage != null)
+			if (lineStatusImage != null) {
 				if (lo.getLineStatus().equals("Good Service")) {
 					lineStatusImage.setImageResource(R.drawable.smileyface);
-					
+
 				} else if (lo.getLineStatus().equals("Severe Delays")
 						|| lo.getLineStatus().equals("Part Closure")) {
 					lineStatusImage.setImageResource(R.drawable.sadface2);
-					
+
 				} else if (lo.getLineStatus().equals("Minor Delays")) {
 					lineStatusImage.setImageResource(R.drawable.sadface);
-				} else
+				} else {
 					lineStatusImage.setImageResource(R.drawable.normalface);
+				}
+			}
 			if (lineName != null) {
 				lineName.setText(lo.getLineName());
-				// lineName.setTextColor(getResources().getColor(getColor(lo.getLinID())));
+			}
+			if (lineStatus != null) {
+				lineStatus.setText(lo.getLineStatusDetails().equals("") ? lo
+						.getLineStatus() : lo.getLineStatusDetails());
 			}
 			if (lineBackground != null) {
 				lineBackground.setBackgroundColor(getResources().getColor(

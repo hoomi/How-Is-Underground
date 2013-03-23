@@ -8,6 +8,21 @@ public class LineObject {
 	private String lineStatusDetails;
 	private int lineColor;
 	private int lineID;
+	private boolean lineShowingStatus;
+
+	/**
+	 * @return lineShowingStatus
+	 */
+	public boolean isLineShowingStatus() {
+		return lineShowingStatus;
+	}
+
+	/**
+	 * @param lineShowingStatus
+	 */
+	public void setLineShowingStatus(boolean lineShowingStatus) {
+		this.lineShowingStatus = lineShowingStatus;
+	}
 
 	/**
 	 * To get the ID of line
@@ -68,6 +83,7 @@ public class LineObject {
 		this.lineName = lineName;
 		this.lineStatus = lineStatus;
 		this.lineResoureImage = lineResoureImage;
+		this.lineShowingStatus = false;
 	}
 	
 	public String getLineName() {
