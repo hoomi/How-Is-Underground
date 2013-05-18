@@ -1,4 +1,4 @@
-package com.blackberry.howisundergroundtoday.com.blackberry.howisundergroundtoday.tools;
+package com.blackberry.howisundergroundtoday.tools;
 
 import android.util.Log;
 
