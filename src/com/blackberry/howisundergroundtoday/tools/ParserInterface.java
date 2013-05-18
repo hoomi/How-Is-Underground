@@ -1,10 +1,15 @@
 package com.blackberry.howisundergroundtoday.tools;
 
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 
 /**
  * Created by Hooman on 17/05/13.
  */
 public interface ParserInterface {
-	public ParserInterface parse(Document doc);
+	/**
+	 * It returns an object from the given doc object
+	 * @param doc
+	 * @return
+	 */
+	public ParserInterface parse(Node doc);
 }

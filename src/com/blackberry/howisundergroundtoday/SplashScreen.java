@@ -25,6 +25,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blackberry.howisundergroundtoday.objects.LineObject;
+
 public class SplashScreen extends Activity {
 
 
@@ -187,9 +189,8 @@ public class SplashScreen extends Activity {
 			Element nameElement = (Element) lineNames.item(i);
 			Element lineStatusElement = (Element) lineLineStatus.item(i);
 			lo = new LineObject(nameElement.getAttribute("Name"),
-					statusElement.getAttribute("Description"),
 					R.drawable.ic_launcher);
-			lo.setLineID(Integer.parseInt(nameElement.getAttribute("ID")));
+			lo.setLineId(Integer.parseInt(nameElement.getAttribute("ID")));
 			lo.setLineStatusDetails(lineStatusElement
 					.getAttribute("StatusDetails"));
 			lines.add(lo);

@@ -30,6 +30,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blackberry.howisundergroundtoday.objects.LineObject;
+
 public class MainActivity extends Activity {
     /**
      * Called when the activity is first created.
@@ -67,9 +69,8 @@ public class MainActivity extends Activity {
                     Element lineStatusElement = (Element) lineLineStatus
                             .item(i);
                     lo = new LineObject(nameElement.getAttribute("Name"),
-                            statusElement.getAttribute("Description"),
                             R.drawable.ic_launcher);
-                    lo.setLineID(Integer.parseInt(nameElement
+                    lo.setLineId(Integer.parseInt(nameElement
                             .getAttribute("ID")));
                     lo.setLineStatusDetails(lineStatusElement
                             .getAttribute("StatusDetails"));
@@ -268,19 +269,12 @@ public class MainActivity extends Activity {
                 holder = (ViewHolder) convertView.getTag();
             }
             LineObject lo = getItem(position);
-            if (lo.getLineStatus().equals("Good Service")) {
-                holder.logo.setImageResource(R.drawable.smileyface);
-            } else if (lo.getLineStatus().equals("Severe Delays")
-                    || lo.getLineStatus().equals("Part Closure")) {
-                holder.logo.setImageResource(R.drawable.sadface2);
-            } else if (lo.getLineStatus().equals("Minor Delays")) {
-                holder.logo.setImageResource(R.drawable.sadface);
-            } else {
-                holder.logo.setImageResource(R.drawable.normalface);
-            }
+            //TODO Add actual data
+            holder.logo.setImageResource(R.drawable.normalface);
             holder.lineName.setText(lo.getLineName());
-            holder.lineStatus.setText(lo.getLineStatusDetails().equals("") ? lo.getLineStatus() : lo.getLineStatusDetails());
-            holder.background.setBackgroundColor(getResources().getColor(getColor(lo.getLineID())));
+            ////////////////////////////
+            holder.lineStatus.setText("Test");
+            holder.background.setBackgroundColor(getResources().getColor(getColor(lo.getLineId())));
             if (lo.isLineShowingStatus()) {
                 holder.lineStatus.setVisibility(View.VISIBLE);
                 holder.lineName.setVisibility(View.GONE);

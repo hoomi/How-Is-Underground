@@ -19,6 +19,8 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.blackberry.howisundergroundtoday.objects.LineObject;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
