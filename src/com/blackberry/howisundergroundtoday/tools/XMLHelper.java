@@ -1,14 +1,21 @@
 package com.blackberry.howisundergroundtoday.tools;
 
-import android.os.Environment;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.*;
-import java.net.URI;
-import java.net.URL;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import android.os.Environment;
 
 /**
  * Created by Hooman on 17/05/13.
@@ -18,146 +25,200 @@ import java.net.URL;
  * This class handles the download and parsing of the xml
  */
 public class XMLHelper {
-    private String url;
-    private String cacheFilePath;
-    private boolean cacheDownload;
-    private ParserInterface parserObject;
+	private String url;
+	private String cacheFilePath;
+	private boolean cacheDownload;
+	private ParserInterface parserObject;
 
+	/**
+	 * Constructor for the XMLHelper
+	 * 
+	 * @param url
+	 *            It is the url for where to get the xml document from
+	 * @param cacheDownload
+	 *            It is a flag to indicate whether the downloaded xml should be
+	 *            cached after it was downloaded
+	 */
+	public XMLHelper(String url, boolean cacheDownload) {
+		this.url = url;
+		this.cacheDownload = cacheDownload;
+		this.cacheFilePath = Environment.getDownloadCacheDirectory()
+				+ "/HowIsUnderground/";
+	}
 
-    /**
-     * Constructor for the XMLHelper
-     *
-     * @param url           It is the url for where to get the xml document from
-     * @param cacheDownload It is a flag to indicate whether the downloaded xml should be cached after it was downloaded
-     */
-    public XMLHelper(String url, boolean cacheDownload) {
-        this.url = url;
-        this.cacheDownload = cacheDownload;
-        this.cacheFilePath = Environment.getDownloadCacheDirectory() + "/HowIsUnderground/";
-    }
+	/**
+	 * XMLHelper constructor
+	 * 
+	 * @param url
+	 *            It is the url for where to get the xml from
+	 */
+	public XMLHelper(String url) {
+		this.url = url;
+		this.cacheDownload = false;
+		this.cacheFilePath = Environment.getDownloadCacheDirectory()
+				+ "/HowIsUnderground/";
+	}
 
-    /**
-     * XMLHelper constructor
-     *
-     * @param url It is the url for where to get the xml from
-     */
-    public XMLHelper(String url) {
-        this.url = url;
-        this.cacheDownload = false;
-        this.cacheFilePath = Environment.getDownloadCacheDirectory() + "/HowIsUnderground/";
-    }
+	/**
+	 * XMLHelper constructor
+	 * 
+	 * @param url
+	 *            It is the url for where to get the xml document from
+	 * @param cacheFilePath
+	 *            The path to where store the cached document
+	 * @param cacheDownload
+	 *            It is a flag to indicate whether the downloaded xml should be
+	 *            cached after it was downloaded
+	 */
+	public XMLHelper(String url, String cacheFilePath, boolean cacheDownload) {
+		this.url = url;
+		this.cacheFilePath = cacheFilePath;
+		this.cacheDownload = cacheDownload;
+	}
 
-    /**
-     * XMLHelper constructor
-     *
-     * @param url           It is the url for where to get the xml document from
-     * @param cacheFilePath The path to where store the cached document
-     * @param cacheDownload It is a flag to indicate whether the downloaded xml should be cached after it was downloaded
-     */
-    public XMLHelper(String url, String cacheFilePath, boolean cacheDownload) {
-        this.url = url;
-        this.cacheFilePath = cacheFilePath;
-        this.cacheDownload = cacheDownload;
-    }
+	/**
+	 * @param url
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    /**
-     * @param url
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	/**
+	 * Sets whether the document should be cached after it was downloaded
+	 * 
+	 * @param cacheDownload
+	 */
+	public void setCacheDownload(boolean cacheDownload) {
+		this.cacheDownload = cacheDownload;
+	}
 
-    /**
-     * Sets whether the document should be cached after it was downloaded
-     *
-     * @param cacheDownload
-     */
-    public void setCacheDownload(boolean cacheDownload) {
-        this.cacheDownload = cacheDownload;
-    }
+	/**
+	 * Set the path to where the cache should be saved
+	 * 
+	 * @param cacheFilePath
+	 *            Tha path to the cache file
+	 */
+	public void setCacheFilePath(String cacheFilePath) {
+		this.cacheFilePath = cacheFilePath;
+	}
 
-    /**
-     * Set the path to where the cache should be saved
-     *
-     * @param cacheFilePath Tha path to the cache file
-     */
-    public void setCacheFilePath(String cacheFilePath) {
-        this.cacheFilePath = cacheFilePath;
-    }
+	/**
+	 * Show whether the helper cached the xml after it was downloaded
+	 * 
+	 * @return true if it is caching and false otherwise
+	 */
+	public boolean isCaching() {
+		return cacheDownload;
+	}
 
-    /**
-     * Show whether the helper cached the xml after it was downloaded
-     *
-     * @return true if it is caching and false otherwise
-     */
-    public boolean isCaching() {
-        return cacheDownload;
-    }
+	/**
+	 * Returns the parser object
+	 * 
+	 * @return parserObject
+	 */
+	public ParserInterface getParserObject() {
+		return parserObject;
+	}
 
-    /**
-     * Returns the parser object
-     *
-     * @return parserObject
-     */
-    public ParserInterface getParserObject() {
-        return parserObject;
-    }
+	/**
+	 * Sets the object that will parse the xml document
+	 * 
+	 * @param parserObject
+	 *            It is the parser object
+	 */
+	public void setParserObject(ParserInterface parserObject) {
+		this.parserObject = parserObject;
+	}
 
-    /**
-     * Sets the object that will parse the xml document
-     *
-     * @param parserObject It is the parser object
-     */
-    public void setParserObject(ParserInterface parserObject) {
-        this.parserObject = parserObject;
-    }
+	/**
+	 * It shows whether there is a cache already available
+	 * 
+	 * @return It returns true if there is a cache otherwise it returns false
+	 */
+	public boolean isThereACache() {
+		return FileHelper.doesTheFileExist(this.cacheFilePath);
+	}
+	
+	/**
+	 * It is used to get raw XML document from the cache
+	 * @return  It returns the cached Document. It will return null if it does not exist
+	 */
+	public Document getCachedDocument() {
+		Document returnDoc = null;
+		URI uri;
+		if (isThereACache()) {
+			return returnDoc;
+		}
+		try {
+			uri = new URI(this.cacheFilePath);
+			returnDoc = this.getXMLDocument(uri);
+		} catch (URISyntaxException e) {
+			Logger.printStackTrace(e);
+		} catch (MalformedURLException e) {
+			Logger.printStackTrace(e);
+		} catch (ParserConfigurationException e) {
+			Logger.printStackTrace(e);
+		} catch (IOException e) {
+			Logger.printStackTrace(e);
+		}
+		return returnDoc;
+	}
+	
+	/**
+	 * It is used to get raw XML document from the cache
+	 * @return  It returns the cached Document. It will return null if it does not exist
+	 */
+	public ParserInterface getCachedXMLObject() {
+		return this.parserObject.parse(getCachedDocument());
+	}
 
-    /**
-     * It shows whether there is a cache already available
-     *
-     * @return It returns true if there is a cache otherwise it returns false
-     */
-    public boolean isThereACache() {
-        //TODO After FileHelper was implemented use it to check whether there is a cache
-        return false;
-    }
-
-    //TODO add the functionality
-    public void startDownloading(int timeout) throws IOException {
-        /*InputStream is;
-        File cacheFile;
-        OutputStream os;
-        Document doc;
-        final byte[] buffer = new byte[1024];
-        URL url;
-        url = new URL(this.url);
-        if (this.cacheDownload) {
-            cacheFile = new File(cachePath);
-            if (cacheFile.exists()) {
-                cacheFile.delete();
-            }
-            cacheFile = new File(cachePath);
-            os = new FileOutputStream(cacheFile);
-        } else {
-            uri = new URI(cacheURI);
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            doc = db.parse(new InputSource(uri.toURL().openStream()));
-            doc.
-            doc.getDocumentElement().normalize();
-        }
-
-
-        is = new InputSource(url.openStream()).getByteStream();
-        int read;
-        while ((read = is.read(buffer)) != -1) {
-            os.write(buffer, 0, read);
-        }
-        os.flush();
-        is.close();
-        os.close();
-        editor.putLong(LASTIMEDOWNLOADKEY, System.currentTimeMillis());
-        editor.commit();
-        return "file://" + cachePath;*/
-    }
+	/**
+	 * It starts downloading the XML online. It caches the XML if the flag is
+	 * set to true
+	 * @return Parsed object
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws ParserConfigurationException
+	 */
+	public ParserInterface startDownloading() throws URISyntaxException,
+			IOException, ParserConfigurationException {
+		InputStream is;
+		Document doc = null;
+		URI uri = new URI(this.url);
+		if (this.cacheDownload) {
+			URL url = new URL(this.url);
+			is = new InputSource(url.openStream()).getByteStream();
+			// First cache the xml in a file and then continue from the file
+			FileHelper.saveStream(is, this.cacheFilePath, true);
+			uri = new URI(this.cacheFilePath);
+		}
+		doc = this.getXMLDocument(uri);
+		if (this.parserObject != null) {
+			return this.parserObject.parse(doc);
+		}
+		return null;
+	}
+	
+	/**
+	 * Return the XML document from a given uri
+	 * @param uri It is the uri to where the file exists
+	 * @return
+	 * @throws ParserConfigurationException
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public Document getXMLDocument(URI uri) throws ParserConfigurationException, MalformedURLException, IOException {
+		Document returnDocument = null;
+		if (uri == null) {
+			throw new MalformedURLException("uri cannot be empty");
+		}
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dbf.newDocumentBuilder();
+		try {
+			returnDocument = db.parse(new InputSource(uri.toURL().openStream()));
+		} catch (SAXException e) {
+			Logger.printStackTrace(e);
+		}
+		return returnDocument;
+	}
 }
