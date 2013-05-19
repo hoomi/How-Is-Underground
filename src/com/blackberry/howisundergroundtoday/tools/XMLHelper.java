@@ -15,7 +15,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import android.os.Environment;
+import android.content.Context;
 
 /**
  * Created by Hooman on 17/05/13.
@@ -27,8 +27,10 @@ import android.os.Environment;
 public class XMLHelper {
 	private String url;
 	private String cacheFilePath;
+	private String cacheDirectory;
 	private boolean cacheDownload;
 	private ParserInterface parserObject;
+	private final Context context;
 
 	/**
 	 * Constructor for the XMLHelper
@@ -39,11 +41,11 @@ public class XMLHelper {
 	 *            It is a flag to indicate whether the downloaded xml should be
 	 *            cached after it was downloaded
 	 */
-	public XMLHelper(String url, boolean cacheDownload) {
+	public XMLHelper(Context context,String url, boolean cacheDownload) {
 		this.url = url;
+		this.context = context;
 		this.cacheDownload = cacheDownload;
-		this.cacheFilePath = Environment.getDownloadCacheDirectory()
-				+ "/HowIsUnderground/";
+		this.cacheFilePath = context.getCacheDir() + "/cache.xml";
 	}
 
 	/**
@@ -52,11 +54,12 @@ public class XMLHelper {
 	 * @param url
 	 *            It is the url for where to get the xml from
 	 */
-	public XMLHelper(String url) {
+	public XMLHelper(Context context, String url) {
 		this.url = url;
+		this.context = context;
 		this.cacheDownload = false;
-		this.cacheFilePath = Environment.getDownloadCacheDirectory()
-				+ "/HowIsUnderground/";
+		this.cacheFilePath = context.getCacheDir() + "/cache.xml";
+		this.cacheFilePath = this.cacheDirectory + "cache.xml";
 	}
 
 	/**
@@ -70,9 +73,10 @@ public class XMLHelper {
 	 *            It is a flag to indicate whether the downloaded xml should be
 	 *            cached after it was downloaded
 	 */
-	public XMLHelper(String url, String cacheFilePath, boolean cacheDownload) {
+	public XMLHelper(Context context, String url, String fileName, boolean cacheDownload) {
 		this.url = url;
-		this.cacheFilePath = cacheFilePath;
+		this.context = context;
+		this.cacheFilePath = this.context.getCacheDir() + "/" + fileName;
 		this.cacheDownload = cacheDownload;
 	}
 
@@ -146,11 +150,11 @@ public class XMLHelper {
 	public Document getCachedDocument() {
 		Document returnDoc = null;
 		URI uri;
-		if (isThereACache()) {
+		if (!isThereACache()) {
 			return returnDoc;
 		}
 		try {
-			uri = new URI(this.cacheFilePath);
+			uri = new URI("file://" + this.cacheFilePath);
 			returnDoc = this.getXMLDocument(uri);
 		} catch (URISyntaxException e) {
 			Logger.printStackTrace(e);
@@ -190,7 +194,7 @@ public class XMLHelper {
 			is = new InputSource(url.openStream()).getByteStream();
 			// First cache the xml in a file and then continue from the file
 			FileHelper.saveStream(is, this.cacheFilePath, true);
-			uri = new URI(this.cacheFilePath);
+			uri = new URI("file://" + this.cacheFilePath);
 		}
 		doc = this.getXMLDocument(uri);
 		if (this.parserObject != null) {

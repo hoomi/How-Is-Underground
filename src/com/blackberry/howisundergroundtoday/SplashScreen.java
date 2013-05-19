@@ -26,6 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blackberry.howisundergroundtoday.objects.LineObject;
+import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
+import com.blackberry.howisundergroundtoday.tools.Logger;
+import com.blackberry.howisundergroundtoday.tools.XMLHelper;
 
 public class SplashScreen extends Activity {
 
@@ -104,13 +107,17 @@ public class SplashScreen extends Activity {
 
 		@Override
 		protected Boolean doInBackground(Void... params) {
+			
+			UndergroundStatusObject mUnderground = UndergroundStatusObject.getInstance();
+			XMLHelper mXMLHelper = new XMLHelper(SplashScreen.this, "http://cloud.tfl.gov.uk/TrackerNet/LineStatus", true);
+			mXMLHelper.setParserObject(mUnderground);
 			boolean useCache = false;
 			try {
 				if (application.checkInternetConnection()) {
-					useCache = application.isThereAnyCache() ? true : false;
+					useCache = mXMLHelper.isThereACache() ? true : false;
 					publishProgress(1);
 				} else {
-					if (!application.isThereAnyCache()) {
+					if (!mXMLHelper.isThereACache()) {
 						publishProgress(10);
 						return false;
 					} else {
@@ -119,25 +126,32 @@ public class SplashScreen extends Activity {
 					}
 				}
 				Thread.sleep(1000);
-				Document doc = XMLfromString(
-						"http://cloud.tfl.gov.uk/TrackerNet/LineStatus",
-						useCache);
-				if (doc == null) {
+				if (!useCache) {
+					mXMLHelper.startDownloading();
+				} else {
+					mXMLHelper.getCachedXMLObject();
+				}
+				if (mUnderground.isLinesArrayEmpty()) {
 					publishProgress(10);
 					return false;
-				} else {
-					application.setDoc(doc);
-				}
+				} 
 				Thread.sleep(1000);
-				publishProgress(2);
-				application.setLines(extractLinesFromDocument(doc));
-				publishProgress(11);
+				publishProgress(13);
 
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				Logger.printStackTrace(e);
 				return false;
-			}
+			} catch (URISyntaxException e) {
+				Logger.printStackTrace(e);
+				return false;
+			} catch (IOException e) {
+				Logger.printStackTrace(e);
+				return false;
+			} catch (ParserConfigurationException e) {
+				Logger.printStackTrace(e);
+				return false;
+			} 
 			return true;
 		}
 

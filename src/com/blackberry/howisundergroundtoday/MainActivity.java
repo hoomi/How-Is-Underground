@@ -31,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blackberry.howisundergroundtoday.objects.LineObject;
+import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 
 public class MainActivity extends Activity {
     /**
@@ -87,21 +88,23 @@ public class MainActivity extends Activity {
     private ListView linesList;
     private ArrayList<LineObject> lines;
     private LineAdapter myAdapter;
-    private Timer updateTimer = null;
+    private final Timer updateTimer = null;
     private MyUpdateHandler handler;
     private NodeList lineNames;
     private NodeList lineStatus;
     private NodeList lineLineStatus;
     private UndergroundApplication application;
+    private UndergroundStatusObject undergroundStatus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        application = (UndergroundApplication) getApplicationContext();
-        handler = new MyUpdateHandler(this);
+//        application = (UndergroundApplication) getApplicationContext();
+//        handler = new MyUpdateHandler(this);
+        undergroundStatus = UndergroundStatusObject.getInstance();
         linesList = (ListView) findViewById(R.id.linesList);
-        lines = application.getLines();
+        lines = undergroundStatus.getLinesArray();
         myAdapter = new LineAdapter(this, R.layout.line_row, lines);
         linesList.setAdapter(myAdapter);
         linesList.setOnItemClickListener(new OnItemClickListener() {
@@ -168,19 +171,19 @@ public class MainActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (updateTimer == null) {
-            updateTimer = new Timer();
-        }
-        updateTimer.scheduleAtFixedRate(myTimerTask, 10 * 60 * 1000,
-                10 * 60 * 1000);
+//        if (updateTimer == null) {
+//            updateTimer = new Timer();
+//        }
+//        updateTimer.scheduleAtFixedRate(myTimerTask, 10 * 60 * 1000,
+//                10 * 60 * 1000);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (updateTimer != null)
-            updateTimer.cancel();
-        updateTimer = null;
+//        if (updateTimer != null)
+//            updateTimer.cancel();
+//        updateTimer = null;
     }
 
     private int getColor(int lineID) {
@@ -271,10 +274,10 @@ public class MainActivity extends Activity {
             LineObject lo = getItem(position);
             //TODO Add actual data
             holder.logo.setImageResource(R.drawable.normalface);
-            holder.lineName.setText(lo.getLineName());
+            holder.lineStatus.setText(lo.getLineStatus().getStatusDescription());
+            holder.background.setBackgroundColor(getResources().getColor(R.color.bak_color));
             ////////////////////////////
-            holder.lineStatus.setText("Test");
-            holder.background.setBackgroundColor(getResources().getColor(getColor(lo.getLineId())));
+            holder.lineName.setText(lo.getLineName());
             if (lo.isLineShowingStatus()) {
                 holder.lineStatus.setVisibility(View.VISIBLE);
                 holder.lineName.setVisibility(View.GONE);

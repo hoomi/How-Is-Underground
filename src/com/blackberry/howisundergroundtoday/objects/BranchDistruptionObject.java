@@ -3,6 +3,7 @@ package com.blackberry.howisundergroundtoday.objects;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
 
 public class BranchDistruptionObject implements ParserInterface {
@@ -10,6 +11,7 @@ public class BranchDistruptionObject implements ParserInterface {
 	private final static String NAME_ATTR = "Name";
 	private final static String STATIONFROM_NODE = "StationFrom";
 	private final static String STATIONTO_NODE = "StationTo";
+	public final static String XML_TAG_NAME = "BranchDisruption";
 
 	private int bdStationFromId;
 	private String bdStationFromName;
@@ -57,6 +59,7 @@ public class BranchDistruptionObject implements ParserInterface {
 		if (doc == null) {
 			return this;
 		}
+		Logger.i(BranchDistruptionObject.class,doc.getNodeName());
 		Element bdElement = (Element) doc;
 		Element tempElement = (Element) bdElement.getElementsByTagName(STATIONFROM_NODE).item(0);
 		this.bdStationFromId = Integer.parseInt(tempElement.getAttribute(ID_ATTR));

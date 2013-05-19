@@ -44,15 +44,23 @@ public class FileHelper {
         } else if (file2Save.exists() && !override) {
             throw new IOException("File already exists. I order to override set the override flag to true");
         }
+        if (!file2Save.exists()) {
+        	if (!file2Save.createNewFile()) {
+        		throw new IOException("Could not create a new file");
+        	}
+        } 
         try {
         	os = new FileOutputStream(file2Save);
         	while ((read = is.read(buffer)) != -1) {
         		os.write(buffer, 0, read);
         	}
         } finally {
-        	os.flush();
+        	if (os != null) {
+        		os.flush();
+        		os.close();
+        	}
         	is.close();
-        	os.close();
+
         }
         return file2Save;
     }

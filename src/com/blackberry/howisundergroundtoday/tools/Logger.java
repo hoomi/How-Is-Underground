@@ -8,7 +8,7 @@ public final class Logger {
 	/**
 	 * This the flag to hide and show the debug message shown by Logger class
 	 */
-    private static boolean DEBUG_MODE = true;
+    private static boolean DEBUG_MODE = false;
     
     /**
      * It works similar to Log.i
