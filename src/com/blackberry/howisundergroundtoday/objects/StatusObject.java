@@ -3,6 +3,7 @@ package com.blackberry.howisundergroundtoday.objects;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
 
 public class StatusObject implements ParserInterface {
@@ -66,6 +67,7 @@ public class StatusObject implements ParserInterface {
 			return this;
 		}
 		Element statusElement = (Element) doc;
+		Logger.i(StatusObject.class, statusElement.getNodeName());
 		String isActiveString = statusElement.getAttribute(ISACTIVE_ATTR);
 		this.statusId = statusElement.getAttribute(ID_ATTR);
 		this.statusCssClass = statusElement.getAttribute(CSSCLASS_ATTR);
