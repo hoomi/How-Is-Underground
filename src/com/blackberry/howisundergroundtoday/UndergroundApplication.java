@@ -19,13 +19,13 @@ import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.blackberry.howisundergroundtoday.objects.LineObject;
-
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.util.Log;
+
+import com.blackberry.howisundergroundtoday.objects.LineObject;
 
 public class UndergroundApplication extends Application {
 
@@ -34,9 +34,6 @@ public class UndergroundApplication extends Application {
 	private SharedPreferences sp;
 	private long lastTimeDownload;
 
-	/* (non-Javadoc)
-	 * @see android.app.Application#onCreate()
-	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();

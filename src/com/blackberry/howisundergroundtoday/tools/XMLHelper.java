@@ -169,10 +169,14 @@ public class XMLHelper {
 	}
 	
 	/**
-	 * It is used to get raw XML document from the cache
+	 * It is used to get the parsed object.
 	 * @return  It returns the cached Document. It will return null if it does not exist
+	 * @throws Exception  If there is no parser object set
 	 */
-	public ParserInterface getCachedXMLObject() {
+	public ParserInterface getCachedXMLObject() throws Exception {
+		if (this.parserObject == null) {
+			throw new Exception("There is no parser object");
+		}
 		return this.parserObject.parse(getCachedDocument());
 	}
 

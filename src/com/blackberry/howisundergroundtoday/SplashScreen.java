@@ -1,21 +1,5 @@
 package com.blackberry.howisundergroundtoday;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,20 +7,14 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.blackberry.howisundergroundtoday.objects.LineObject;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
-import com.blackberry.howisundergroundtoday.tools.Logger;
-import com.blackberry.howisundergroundtoday.tools.XMLHelper;
 
 public class SplashScreen extends Activity {
 
 
 	private ProgressBar splashProgressBar;
 	private TextView splashProgressStatus;
-	private UndergroundApplication application;
-	private final String cachePath = "";
 
 
 	@Override
@@ -44,7 +22,6 @@ public class SplashScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.splashscreen);
-		application = (UndergroundApplication) getApplicationContext();
 		splashProgressBar = (ProgressBar) findViewById(R.id.splash_progressbar);
 		splashProgressStatus = (TextView) findViewById(R.id.splashstatus_textview);
 		new SplashScreenPlayer().execute();
@@ -53,12 +30,50 @@ public class SplashScreen extends Activity {
 	private class SplashScreenPlayer extends AsyncTask<Void, Integer, Boolean> {
 
 		@Override
+		protected void onPreExecute() {
+			splashProgressBar.setMax(10);
+			splashProgressBar.setProgress(0);
+			splashProgressStatus.setText(R.string.internet_connection_check);
+			super.onPreExecute();
+		}
+		
+		@Override
+		protected Boolean doInBackground(Void... params) {
+			Intent mIntent = new Intent(SplashScreen.this, XMLDownloaderService.class);
+			mIntent.setAction(XMLDownloaderService.DOWNLOAD_CACHE_ACTION);
+			startService(mIntent);
+			UndergroundStatusObject mUSO = UndergroundStatusObject.getInstance();
+			int i = 10;
+			while (mUSO.isLinesArrayEmpty() && i >= 0) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					return false;
+				}
+				i++;
+				publishProgress(1);
+			}
+			if (mUSO.isLinesArrayEmpty()) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+		@Override
 		protected void onCancelled() {
 			splashProgressStatus.setText(R.string.cancelled);
+			stopService(new Intent(SplashScreen.this, XMLDownloaderService.class));
 			finish();
 			super.onCancelled();
 		}
 
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+			splashProgressBar.incrementProgressBy(values[0]);
+			super.onProgressUpdate(values);
+		}
+		
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if (result && !this.isCancelled()) {
@@ -70,146 +85,7 @@ public class SplashScreen extends Activity {
 			super.onPostExecute(result);
 		}
 
-		@Override
-		protected void onPreExecute() {
-			splashProgressBar.setMax(10);
-			splashProgressBar.setProgress(0);
-			splashProgressStatus.setText(R.string.internet_connection_check);
-			super.onPreExecute();
-		}
 
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			int addedProgress = values[0] - splashProgressBar.getProgress();
-			splashProgressBar.incrementProgressBy(addedProgress);
-			switch (values[0]) {
-			case 1:
-				splashProgressStatus.setText(R.string.contacting_tfl);
-				break;
-			case 2:
-				splashProgressStatus.setText(R.string.preparing_linestatus);
-				break;
-			case 3:
-				splashProgressStatus.setText(R.string.used_cache_string);
-				break;
-			case 10:
-				splashProgressStatus.setText(R.string.error_occured);
-				Toast.makeText(SplashScreen.this,
-						"Please check your internet connection",
-						Toast.LENGTH_LONG).show();
-				break;
-			case 11:
-				splashProgressStatus.setText(R.string.sucessful_download);
-				break;
-			}
-			super.onProgressUpdate(values);
-		}
 
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			
-			UndergroundStatusObject mUnderground = UndergroundStatusObject.getInstance();
-			XMLHelper mXMLHelper = new XMLHelper(SplashScreen.this, "http://cloud.tfl.gov.uk/TrackerNet/LineStatus", true);
-			mXMLHelper.setParserObject(mUnderground);
-			boolean useCache = false;
-			try {
-				if (application.checkInternetConnection()) {
-					useCache = mXMLHelper.isThereACache() ? true : false;
-					publishProgress(1);
-				} else {
-					if (!mXMLHelper.isThereACache()) {
-						publishProgress(10);
-						return false;
-					} else {
-						publishProgress(3);
-						useCache = true;
-					}
-				}
-				Thread.sleep(1000);
-				if (!useCache) {
-					mXMLHelper.startDownloading();
-				} else {
-					mXMLHelper.getCachedXMLObject();
-				}
-				if (mUnderground.isLinesArrayEmpty()) {
-					publishProgress(10);
-					return false;
-				} 
-				Thread.sleep(1000);
-				publishProgress(13);
-
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				Logger.printStackTrace(e);
-				return false;
-			} catch (URISyntaxException e) {
-				Logger.printStackTrace(e);
-				return false;
-			} catch (IOException e) {
-				Logger.printStackTrace(e);
-				return false;
-			} catch (ParserConfigurationException e) {
-				Logger.printStackTrace(e);
-				return false;
-			} 
-			return true;
-		}
-
-	}
-
-	public Document XMLfromString(String url, boolean useCache) {
-		Document doc;
-		URI uri;
-		String cacheURI;
-		try {
-			if (!useCache) {
-				cacheURI = application.downloadAndCache(url);
-			} else {
-				cacheURI = "file://" + cachePath;
-			}
-			uri = new URI(cacheURI);
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			doc = db.parse(new InputSource(uri.toURL().openStream()));
-			doc.getDocumentElement().normalize();
-			return doc;
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		} catch (SAXException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	/**
-	 * Creates an array of Line object from the xmlDoc
-	 * @param xmlDoc
-	 * @return an array of Line Objects
-	 */
-	public ArrayList<LineObject> extractLinesFromDocument(Document doc) {
-		ArrayList<LineObject> lines = new ArrayList<LineObject>();
-		NodeList lineStatus = doc.getElementsByTagName("Status");
-		NodeList lineNames = doc.getElementsByTagName("Line");
-		NodeList lineLineStatus = doc.getElementsByTagName("LineStatus");
-		LineObject lo;
-		for (int i = 0; i < lineStatus.getLength(); i++) {
-			Element statusElement = (Element) lineStatus.item(i);
-			Element nameElement = (Element) lineNames.item(i);
-			Element lineStatusElement = (Element) lineLineStatus.item(i);
-			lo = new LineObject(nameElement.getAttribute("Name"),
-					R.drawable.ic_launcher);
-			lo.setLineId(Integer.parseInt(nameElement.getAttribute("ID")));
-			lo.setLineStatusDetails(lineStatusElement
-					.getAttribute("StatusDetails"));
-			lines.add(lo);
-		}
-
-		return lines;
 	}
 }
