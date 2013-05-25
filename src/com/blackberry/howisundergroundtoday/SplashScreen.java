@@ -1,91 +1,109 @@
 package com.blackberry.howisundergroundtoday;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
+import android.content.ServiceConnection;
+import android.os.*;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 
 public class SplashScreen extends Activity {
 
+    private ProgressBar splashProgressBar;
+    private TextView splashProgressStatus;
+    private XMLDownloaderService mXMLService = null;
+    private Intent mIntent = null;
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            XMLDownloaderService.XMLServiceBinder mBinder = (XMLDownloaderService.XMLServiceBinder) iBinder;
+            mXMLService = mBinder.getXMLService();
+            mXMLService.setHandler(mHandler);
+            mIntent.setAction(XMLDownloaderService.DOWNLOAD_CACHE_ACTION);
+            startService(mIntent);
+        }
 
-	private ProgressBar splashProgressBar;
-	private TextView splashProgressStatus;
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+        }
+    };
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch(msg.arg1) {
+                case 0:
+                    String message = (String)msg.obj;
+                    updateUIMessage(message);
+                    if (message.equals(XMLDownloaderService.MESSAGE_PARSED)) {
+                        //TODO Introduce a delay to hold the activity for longer
+                        startActivity(new Intent(SplashScreen.this,MainActivity.class));
+                        finish();
+                    }
+                    break;
+                case 1:
+                    updateUIMessage((String)msg.obj);
+                    stopService(mIntent);
+                    finish();
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.splashscreen);
+        splashProgressBar = (ProgressBar) findViewById(R.id.splash_progressbar);
+        splashProgressStatus = (TextView) findViewById(R.id.splashstatus_textview);
+        splashProgressBar.setMax(10);
+        splashProgressBar.setProgress(0);
+        splashProgressStatus.setText(R.string.internet_connection_check_string);
+        this.mIntent = new Intent(SplashScreen.this, XMLDownloaderService.class);
+        bindService(this.mIntent, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    private void updateUIMessage(String  message) {
+        if (message == null || message == "") {
+            return;
+        }
+        if (message == XMLDownloaderService.MESSAGE_PARSED) {
+            splashProgressStatus.setText(R.string.sucessful_download_string);
+            splashProgressBar.setProgress(10);
+        } else if (message.equals(XMLDownloaderService.MESSAGE_ONLINE)) {
+            splashProgressStatus.setText(R.string.contacting_tfl_string);
+            splashProgressBar.setProgress(5);
+        }  else if (message.equals(XMLDownloaderService.MESSAGE_USING_CACHE)) {
+            splashProgressStatus.setText(R.string.preparing_linestatus_string);
+            splashProgressBar.setProgress(5);
+        } else if (message.equals(XMLDownloaderService.ERROR_MESSAGE_NO_CONNECTION)) {
+            Toast.makeText(SplashScreen.this, R.string.internet_connection_unavailable_error_string,Toast.LENGTH_LONG).show();
+        } else if (message.equals(XMLDownloaderService.ERROR_MESSAGE_ROAMING)) {
+            //TODO Have a different behaviour for when roaming is disabled
+            Toast.makeText(SplashScreen.this, R.string.internet_connection_roaming_disabled_error_string,Toast.LENGTH_LONG).show();
+        } else if (message.equals(XMLDownloaderService.ERROR_MESSAGE_GENERAL_ERROR)) {
+            Toast.makeText(SplashScreen.this, R.string.error_occured_string,Toast.LENGTH_LONG).show();
+        }
+    }
 
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.splashscreen);
-		splashProgressBar = (ProgressBar) findViewById(R.id.splash_progressbar);
-		splashProgressStatus = (TextView) findViewById(R.id.splashstatus_textview);
-		new SplashScreenPlayer().execute();
-	}
+    @Override
+    protected void onDestroy() {
+        unbindService(mServiceConnection);
+        super.onDestroy();
+    }
 
-	private class SplashScreenPlayer extends AsyncTask<Void, Integer, Boolean> {
-
-		@Override
-		protected void onPreExecute() {
-			splashProgressBar.setMax(10);
-			splashProgressBar.setProgress(0);
-			splashProgressStatus.setText(R.string.internet_connection_check);
-			super.onPreExecute();
-		}
-		
-		@Override
-		protected Boolean doInBackground(Void... params) {
-			Intent mIntent = new Intent(SplashScreen.this, XMLDownloaderService.class);
-			mIntent.setAction(XMLDownloaderService.DOWNLOAD_CACHE_ACTION);
-			startService(mIntent);
-			UndergroundStatusObject mUSO = UndergroundStatusObject.getInstance();
-			int i = 10;
-			while (mUSO.isLinesArrayEmpty() && i >= 0) {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					return false;
-				}
-				i++;
-				publishProgress(1);
-			}
-			if (mUSO.isLinesArrayEmpty()) {
-				return false;
-			} else {
-				return true;
-			}
-		}
-		
-		@Override
-		protected void onCancelled() {
-			splashProgressStatus.setText(R.string.cancelled);
-			stopService(new Intent(SplashScreen.this, XMLDownloaderService.class));
-			finish();
-			super.onCancelled();
-		}
-
-		@Override
-		protected void onProgressUpdate(Integer... values) {
-			splashProgressBar.incrementProgressBy(values[0]);
-			super.onProgressUpdate(values);
-		}
-		
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (result && !this.isCancelled()) {
-				startActivity(new Intent(SplashScreen.this, MainActivity.class));
-				overridePendingTransition(android.R.anim.fade_in,
-						android.R.anim.fade_out);
-			}
-			finish();
-			super.onPostExecute(result);
-		}
-
-
-
-	}
+    @Override
+    public void onBackPressed() {
+        stopService(this.mIntent);
+        super.onBackPressed();
+    }
 }

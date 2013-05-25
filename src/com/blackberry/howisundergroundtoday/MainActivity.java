@@ -54,7 +54,7 @@ public class MainActivity extends Activity {
             } else {
                 Message msg = new Message();
                 msg.what = NOTIFY_USER;
-                msg.obj = getString(R.string.internet_connection_unavailable_string);
+                msg.obj = getString(R.string.internet_connection_unavailable_error_string);
                 handler.sendMessage(msg);
                 return;
             }
