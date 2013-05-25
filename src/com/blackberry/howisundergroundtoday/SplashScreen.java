@@ -9,7 +9,7 @@ import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
+import com.blackberry.howisundergroundtoday.tools.Logger;
 
 public class SplashScreen extends Activity {
 
@@ -17,6 +17,27 @@ public class SplashScreen extends Activity {
     private TextView splashProgressStatus;
     private XMLDownloaderService mXMLService = null;
     private Intent mIntent = null;
+    private AsyncTask<Void, Void, Void> splashPlayer = new AsyncTask<Void, Void, Void>() {
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Logger.printStackTrace(e);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (!this.isCancelled()) {
+                startActivity(new Intent(SplashScreen.this, MainActivity.class));
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                finish();
+            }
+            super.onPostExecute(aVoid);
+        }
+    };
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -35,18 +56,16 @@ public class SplashScreen extends Activity {
         @Override
         public void handleMessage(Message msg) {
 
-            switch(msg.arg1) {
+            switch (msg.arg1) {
                 case 0:
-                    String message = (String)msg.obj;
+                    String message = (String) msg.obj;
                     updateUIMessage(message);
                     if (message.equals(XMLDownloaderService.MESSAGE_PARSED)) {
-                        //TODO Introduce a delay to hold the activity for longer
-                        startActivity(new Intent(SplashScreen.this,MainActivity.class));
-                        finish();
+                        splashPlayer.execute();
                     }
                     break;
                 case 1:
-                    updateUIMessage((String)msg.obj);
+                    updateUIMessage((String) msg.obj);
                     stopService(mIntent);
                     finish();
                     break;
@@ -71,7 +90,7 @@ public class SplashScreen extends Activity {
         bindService(this.mIntent, mServiceConnection, BIND_AUTO_CREATE);
     }
 
-    private void updateUIMessage(String  message) {
+    private void updateUIMessage(String message) {
         if (message == null || message == "") {
             return;
         }
@@ -81,19 +100,18 @@ public class SplashScreen extends Activity {
         } else if (message.equals(XMLDownloaderService.MESSAGE_ONLINE)) {
             splashProgressStatus.setText(R.string.contacting_tfl_string);
             splashProgressBar.setProgress(5);
-        }  else if (message.equals(XMLDownloaderService.MESSAGE_USING_CACHE)) {
+        } else if (message.equals(XMLDownloaderService.MESSAGE_USING_CACHE)) {
             splashProgressStatus.setText(R.string.preparing_linestatus_string);
             splashProgressBar.setProgress(5);
         } else if (message.equals(XMLDownloaderService.ERROR_MESSAGE_NO_CONNECTION)) {
-            Toast.makeText(SplashScreen.this, R.string.internet_connection_unavailable_error_string,Toast.LENGTH_LONG).show();
+            Toast.makeText(SplashScreen.this, R.string.internet_connection_unavailable_error_string, Toast.LENGTH_LONG).show();
         } else if (message.equals(XMLDownloaderService.ERROR_MESSAGE_ROAMING)) {
             //TODO Have a different behaviour for when roaming is disabled
-            Toast.makeText(SplashScreen.this, R.string.internet_connection_roaming_disabled_error_string,Toast.LENGTH_LONG).show();
+            Toast.makeText(SplashScreen.this, R.string.internet_connection_roaming_disabled_error_string, Toast.LENGTH_LONG).show();
         } else if (message.equals(XMLDownloaderService.ERROR_MESSAGE_GENERAL_ERROR)) {
-            Toast.makeText(SplashScreen.this, R.string.error_occured_string,Toast.LENGTH_LONG).show();
+            Toast.makeText(SplashScreen.this, R.string.error_occured_string, Toast.LENGTH_LONG).show();
         }
     }
-
 
     @Override
     protected void onDestroy() {
