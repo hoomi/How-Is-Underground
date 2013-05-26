@@ -1,14 +1,5 @@
 package com.blackberry.howisundergroundtoday;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -22,16 +13,18 @@ import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.blackberry.howisundergroundtoday.objects.LineObject;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends Activity {
     /**
@@ -69,8 +62,7 @@ public class MainActivity extends Activity {
                     Element nameElement = (Element) lineNames.item(i);
                     Element lineStatusElement = (Element) lineLineStatus
                             .item(i);
-                    lo = new LineObject(nameElement.getAttribute("Name"),
-                            R.drawable.ic_launcher);
+                    lo = new LineObject(nameElement.getAttribute("Name"));
                     lo.setLineId(Integer.parseInt(nameElement
                             .getAttribute("ID")));
                     lo.setLineStatusDetails(lineStatusElement
@@ -84,11 +76,11 @@ public class MainActivity extends Activity {
             }
         }
     };
+    private final Timer updateTimer = null;
     AnimationDrawable animation;
     private ListView linesList;
     private ArrayList<LineObject> lines;
     private LineAdapter myAdapter;
-    private final Timer updateTimer = null;
     private MyUpdateHandler handler;
     private NodeList lineNames;
     private NodeList lineStatus;
@@ -186,40 +178,6 @@ public class MainActivity extends Activity {
 //        updateTimer = null;
     }
 
-    private int getColor(int lineID) {
-        switch (lineID) {
-            case 1:
-                return R.color.bak_color;
-            case 2:
-                return R.color.cen_color;
-            case 7:
-                return R.color.cir_color;
-            case 8:
-                return R.color.ham_color;
-            case 4:
-                return R.color.jub_color;
-            case 11:
-                return R.color.met_color;
-            case 5:
-                return R.color.nor_color;
-            case 6:
-                return R.color.pic_color;
-            case 3:
-                return R.color.vic_color;
-            case 12:
-                return R.color.wat_color;
-            case 82:
-                return R.color.ove_color;
-            case 81:
-                return R.color.dlr_color;
-            case 9:
-                return R.color.dis_color;
-            default:
-                return 0;
-
-        }
-    }
-
     static class ViewHolder {
         TextView lineName, lineStatus;
         ImageView logo;
@@ -272,11 +230,9 @@ public class MainActivity extends Activity {
                 holder = (ViewHolder) convertView.getTag();
             }
             LineObject lo = getItem(position);
-            //TODO Add actual data
-            holder.logo.setImageResource(R.drawable.normalface);
+            holder.logo.setImageResource(lo.getLineStatus().getStatusResoureImage());
             holder.lineStatus.setText(lo.getLineStatus().getStatusDescription());
-            holder.background.setBackgroundColor(getResources().getColor(R.color.bak_color));
-            ////////////////////////////
+            holder.background.setBackgroundColor(getResources().getColor(lo.getLineColor()));
             holder.lineName.setText(lo.getLineName());
             if (lo.isLineShowingStatus()) {
                 holder.lineStatus.setVisibility(View.VISIBLE);
