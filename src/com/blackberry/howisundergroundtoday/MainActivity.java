@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
+import com.blackberry.howisundergroundtoday.adapter.LineAdapter;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 import org.w3c.dom.Document;
@@ -30,7 +31,6 @@ public class MainActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    static ViewHolder holder;
     private final int NEW_UPDATE_ARRIVED = 1;
     private final int NOTIFY_USER = 2;
     private final TimerTask myTimerTask = new TimerTask() {
@@ -92,8 +92,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-//        application = (UndergroundApplication) getApplicationContext();
-//        handler = new MyUpdateHandler(this);
         undergroundStatus = UndergroundStatusObject.getInstance();
         linesList = (ListView) findViewById(R.id.linesList);
         lines = undergroundStatus.getLinesArray();
@@ -178,11 +176,7 @@ public class MainActivity extends Activity {
 //        updateTimer = null;
     }
 
-    static class ViewHolder {
-        TextView lineName, lineStatus;
-        ImageView logo;
-        View background;
-    }
+
 
     private class MyUpdateHandler extends Handler {
         private final Context context;
@@ -201,56 +195,6 @@ public class MainActivity extends Activity {
                     Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show();
                     break;
             }
-        }
-
-    }
-
-    private class LineAdapter extends ArrayAdapter<LineObject> {
-
-        public LineAdapter(Context context, int textViewResourceId,
-                           List<LineObject> objects) {
-            super(context, textViewResourceId, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.line_row,
-                        null, false);
-                holder = new ViewHolder();
-                holder.lineName = (TextView) convertView
-                        .findViewById(R.id.linenametextview);
-                holder.lineStatus = (TextView) convertView
-                        .findViewById(R.id.linestatustextview);
-                holder.logo = (ImageView) convertView
-                        .findViewById(R.id.linestatusimageview);
-                holder.background = convertView
-                        .findViewById(R.id.linebackground);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            LineObject lo = getItem(position);
-            holder.logo.setImageResource(lo.getLineStatus().getStatusResoureImage());
-            holder.lineStatus.setText(lo.getLineStatus().getStatusDescription());
-            holder.background.setBackgroundColor(getResources().getColor(lo.getLineColor()));
-            holder.lineName.setText(lo.getLineName());
-            if (lo.isLineShowingStatus()) {
-                holder.lineStatus.setVisibility(View.VISIBLE);
-                holder.lineName.setVisibility(View.GONE);
-                holder.lineName.setAlpha(0);
-                holder.lineStatus.setAlpha(1);
-                holder.lineName.setRotationX(180);
-                holder.lineStatus.setRotationX(0);
-            } else {
-                holder.lineName.setAlpha(1);
-                holder.lineStatus.setAlpha(0);
-                holder.lineStatus.setVisibility(View.GONE);
-                holder.lineName.setVisibility(View.VISIBLE);
-                holder.lineName.setRotationX(0);
-                holder.lineStatus.setRotationX(180);
-            }
-            convertView.setTag(holder);
-            return convertView;
         }
 
     }
