@@ -5,7 +5,10 @@ import java.net.URISyntaxException;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import android.app.AlarmManager;
 import android.app.IntentService;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Binder;
@@ -38,7 +41,9 @@ public class XMLDownloaderService extends IntentService {
 	private long lastTimeCached = 0;
 	private XMLServiceBinder mBinder = null;
 	private Handler mHandler = null;
-	
+    private AlarmManager mAlarmManager = null;
+    private PendingIntent mPendingIntent = null;
+
 	private XMLHelper mXMLHelper = null;
 	
 	public XMLDownloaderService() {
@@ -59,19 +64,25 @@ public class XMLDownloaderService extends IntentService {
 		if (mBinder == null) {
 			mBinder = new XMLServiceBinder();
 		}
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, XMLDownloaderService.class);
+        intent.setAction(DOWNLOAD_CACHE_ACTION);
+        mPendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        mAlarmManager.setInexactRepeating(AlarmManager.RTC, System.currentTimeMillis() + 10 * 60 * 1000, AlarmManager.INTERVAL_FIFTEEN_MINUTES, mPendingIntent);
 		super.onCreate();
 	}
 
 	@Override
 	public void onDestroy() {
 		this.mXMLHelper = null;
+        mAlarmManager.cancel(this.mPendingIntent);
 		super.onDestroy();
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		if(intent.getAction().equals(DOWNLOAD_CACHE_ACTION)) {
-			Logger.i(XMLDownloaderService.class, "onHandleIntent");
+			Logger.i(XMLDownloaderService.class, "onHandleIntent Intent: " + intent.getAction());
 			SharedPreferences mSharedPrefrences = getSharedPreferences("How_Is_Underground", MODE_PRIVATE);
 			lastTimeCached = mSharedPrefrences.getLong(LAST_TIME_DOWNLOAD_KEY, 0);
 
@@ -93,8 +104,7 @@ public class XMLDownloaderService extends IntentService {
                         //TODO Add an option in the settings if they want to enable roaming
                         roaming = InternetHelper.isItRoaming(this);
                         if ( connected && !roaming) {
-                            sendMessageToHandler(0, MESSAGE_ONLINE
-                            );
+                            sendMessageToHandler(0, MESSAGE_ONLINE);
                             this.mXMLHelper.startDownloading();
                             if (!UndergroundStatusObject.getInstance().isLinesArrayEmpty()) {
                                 SharedPreferences.Editor mSPEditor = mSharedPrefrences.edit();

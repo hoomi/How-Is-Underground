@@ -1,10 +1,11 @@
 package com.blackberry.howisundergroundtoday.objects;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 public class StatusObject implements ParserInterface {
 
@@ -13,7 +14,7 @@ public class StatusObject implements ParserInterface {
     private final static String ID_ATTR = "ID";
     private final static String ISACTIVE_ATTR = "IsActive";
     private final static String GOODSERVICE_ID = "GS";
-    private final static String PARTCLOSURE_ID = "PC";
+    private final static String PLANNEDCLOSURE_ID = "PC";
     private final static String PARTSUSPENDED_ID = "PS";
     private final static String MINORDELAYS_ID = "MD";
     private final static String SEVEREDELAYS_ID = "SD";

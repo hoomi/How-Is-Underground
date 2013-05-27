@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.view.Window;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.blackberry.howisundergroundtoday.tools.Logger;
 
 public class SplashScreen extends Activity {
@@ -17,9 +22,10 @@ public class SplashScreen extends Activity {
     private TextView splashProgressStatus;
     private XMLDownloaderService mXMLService = null;
     private Intent mIntent = null;
-    private AsyncTask<Void, Void, Void> splashPlayer = new AsyncTask<Void, Void, Void>() {
+    private final AsyncTask<Void, Void, Void> splashPlayer = new AsyncTask<Void, Void, Void>() {
         @Override
         protected Void doInBackground(Void... voids) {
+        	mXMLService.setHandler(null);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
@@ -38,7 +44,7 @@ public class SplashScreen extends Activity {
             super.onPostExecute(aVoid);
         }
     };
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
+    private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             XMLDownloaderService.XMLServiceBinder mBinder = (XMLDownloaderService.XMLServiceBinder) iBinder;
@@ -52,7 +58,7 @@ public class SplashScreen extends Activity {
         public void onServiceDisconnected(ComponentName componentName) {
         }
     };
-    private Handler mHandler = new Handler() {
+    private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
 
