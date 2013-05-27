@@ -21,12 +21,16 @@ public class InternetHelper {
 	}
 	
 	/**
-	 * Checks whether the device is on a roaming network or not
+	 * Checks whether the device is on a roaming network or not (It returns false if the device is not connected to the internet)
 	 * @param context
 	 * @return
 	 */
 	public static boolean isItRoaming(Context context) {
+		if(!InternetHelper.isConnectedToInternet(context)) {
+			return false;
+		}
 		ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
 		return mConnectivityManager.getActiveNetworkInfo().isRoaming();
 		
 	}
