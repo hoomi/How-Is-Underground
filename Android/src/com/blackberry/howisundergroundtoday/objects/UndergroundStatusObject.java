@@ -1,11 +1,10 @@
 package com.blackberry.howisundergroundtoday.objects;
 
-import java.util.ArrayList;
-
-import org.w3c.dom.Node;
-
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
+import org.w3c.dom.Node;
+
+import java.util.ArrayList;
 
 public class UndergroundStatusObject implements ParserInterface {
 	private final ArrayList<LineObject> linesArray;

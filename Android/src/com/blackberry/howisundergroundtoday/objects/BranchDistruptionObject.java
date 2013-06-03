@@ -1,10 +1,9 @@
 package com.blackberry.howisundergroundtoday.objects;
 
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class BranchDistruptionObject implements ParserInterface {
 	private final static String ID_ATTR = "ID";

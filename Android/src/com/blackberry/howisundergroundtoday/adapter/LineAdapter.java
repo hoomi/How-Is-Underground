@@ -1,16 +1,15 @@
 package com.blackberry.howisundergroundtoday.adapter;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
+
+import java.util.List;
 
 public class LineAdapter extends ArrayAdapter<LineObject> {
     private static ViewHolder holder;

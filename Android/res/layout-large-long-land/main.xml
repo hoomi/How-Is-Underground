@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical">
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/linesList"
-        android:layout_width="match_parent"
+    <fragment
+        android:id="@+id/line_list_fragment"
+        android:name="com.blackberry.howisundergroundtoday.fragments.LinesListFragment"
         android:layout_height="match_parent"
-        android:scrollbars="none" />
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+    </fragment>
 
-    <FrameLayout
-        android:id="@+id/lineStatusFrameLayout"
+    <fragment
+        android:id="@+id/line_details_fragment"
+        android:name="com.blackberry.howisundergroundtoday.fragments.LinesDetailsFragment"
         android:layout_height="match_parent"
-        android:layout_width="wrap_content"></FrameLayout>
+        android:layout_width="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@id/line_details_fragment">
+    </fragment>
 
 </RelativeLayout>

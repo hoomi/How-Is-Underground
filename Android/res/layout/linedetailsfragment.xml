@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/lineTitleTextview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ></TextView>
+
+    <LinearLayout
+        android:id="@+id/lineStatusAndImageLinearlayout"
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_below="@id/lineTitleTextview"
+        android:layout_alignParentLeft="true">
+
+        <TextView
+            android:id="@+id/lineStatusTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"></TextView>
+
+        <ImageView
+            android:id="@+id/lineIconImageview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"></ImageView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lineStatusDetails"
+        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_below="@id/lineStatusAndImageLinearlayout"></TextView>
+</RelativeLayout>

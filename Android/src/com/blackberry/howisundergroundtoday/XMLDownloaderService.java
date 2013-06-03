@@ -1,10 +1,5 @@
 package com.blackberry.howisundergroundtoday;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
@@ -15,11 +10,14 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 import com.blackberry.howisundergroundtoday.tools.InternetHelper;
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.XMLHelper;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class XMLDownloaderService extends IntentService {
 

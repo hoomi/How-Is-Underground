@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@android:color/black" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@android:color/black">
 
     <TextView
         android:id="@+id/title_textview"
@@ -15,7 +15,7 @@
         android:gravity="center"
         android:text="@string/app_name"
         android:textColor="@color/white"
-        android:textSize="22dip" />
+        android:textSize="22dip"/>
 
     <ImageView
         android:id="@+id/splash_imageview"
@@ -24,14 +24,14 @@
         android:layout_above="@+id/splashstatus_textview"
         android:layout_below="@id/title_textview"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/splashscreeniamge" />
+        android:src="@drawable/splashscreeniamge"/>
 
     <ProgressBar
         android:id="@+id/splash_progressbar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"/>
 
     <TextView
         android:id="@+id/splashstatus_textview"
@@ -40,6 +40,6 @@
         android:layout_above="@id/splash_progressbar"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
 </RelativeLayout>
