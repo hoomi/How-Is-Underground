@@ -4,10 +4,13 @@
                 android:layout_height="fill_parent"
     >
 
-    <FrameLayout
-        android:id="@+id/lineStatusFrameLayout"
-        android:layout_width="match_parent"
+    <fragment
+        android:id="@+id/line_list_fragment"
+        android:name="com.blackberry.howisundergroundtoday.fragments.LinesListFragment"
         android:layout_height="match_parent"
-        ></FrameLayout>
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true">
+    </fragment>
 
 </RelativeLayout>

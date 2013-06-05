@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AdapterView;
@@ -22,11 +24,13 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.blackberry.howisundergroundtoday.adapter.LineAdapter;
+import com.blackberry.howisundergroundtoday.adapter.LineFragmentAdapter;
+import com.blackberry.howisundergroundtoday.fragments.LinesListFragment;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 
-public class MainActivity extends Activity {
-    private final static Handler mHandler = new Handler() {
+public class MainActivity extends FragmentActivity {
+    private final Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
@@ -34,14 +38,13 @@ public class MainActivity extends Activity {
                 String message = (String) msg.obj;
                 if (message
                         .equalsIgnoreCase(XMLDownloaderService.MESSAGE_PARSED)) {
-                    myAdapter.notifyDataSetChanged();
+//                    myAdapter.notifyDataSetChanged();
                 }
             }
             super.handleMessage(msg);
         }
 
     };
-    private static LineAdapter myAdapter;
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName,
@@ -59,31 +62,19 @@ public class MainActivity extends Activity {
      * Called when the activity is first created.
      */
     AnimationDrawable animation;
-    private ListView linesList;
-    private ArrayList<LineObject> lines = null;
-    private UndergroundStatusObject undergroundStatus = null;
     private XMLDownloaderService mXMLServiceDownload = null;
     private Intent mIntent = null;
+    private LineFragmentAdapter mFragmentAdapter = null;
+    private FragmentManager mFragmentManager = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        mIntent = new Intent(this, XMLDownloaderService.class);
+        this.mFragmentManager = getSupportFragmentManager();
+        this.mIntent = new Intent(this, XMLDownloaderService.class);
         bindService(mIntent, mServiceConnection, BIND_AUTO_CREATE);
-        undergroundStatus = UndergroundStatusObject.getInstance();
-        linesList = (ListView) findViewById(R.id.linesList);
-        lines = undergroundStatus.getLinesArray();
-        myAdapter = new LineAdapter(this, R.layout.line_row, lines);
-        linesList.setAdapter(myAdapter);
-        linesList.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-                                    long arg3) {
-                flipTheView(arg1, (LineObject) arg0.getItemAtPosition(arg2));
-            }
-        });
+        this.mFragmentAdapter = new LineFragmentAdapter(this.mFragmentManager,  UndergroundStatusObject.getInstance().getLinesArray());
     }
 
     private void flipTheView(final View theViewToBeAnimated,
