@@ -16,6 +16,9 @@ public class LinesListFragment extends Fragment implements AdapterView.OnItemCli
     private LineAdapter mLineAdapter = null;
     private ListView mLinesListView = null;
 
+    public LinesListFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.linelistfragment, null, false);

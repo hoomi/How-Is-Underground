@@ -2,24 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+               >
 
     <fragment
         android:id="@+id/line_list_fragment"
         android:name="com.blackberry.howisundergroundtoday.fragments.LinesListFragment"
         android:layout_height="match_parent"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true">
     </fragment>
 
-    <fragment
-        android:id="@+id/line_details_fragment"
-        android:name="com.blackberry.howisundergroundtoday.fragments.LinesDetailsFragment"
-        android:layout_height="match_parent"
-        android:layout_width="fill_parent"
+    <android.support.v4.view.ViewPager
         android:layout_alignParentTop="true"
-        android:layout_alignRight="@id/line_details_fragment">
-    </fragment>
+        android:layout_toRightOf="@id/line_list_fragment"
+        android:id="@+id/line_details_pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" />
 
 </RelativeLayout>

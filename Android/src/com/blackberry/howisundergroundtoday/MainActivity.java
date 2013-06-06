@@ -1,12 +1,9 @@
 package com.blackberry.howisundergroundtoday;
 
-import java.util.ArrayList;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -17,15 +14,10 @@ import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
-
-import com.blackberry.howisundergroundtoday.adapter.LineAdapter;
 import com.blackberry.howisundergroundtoday.adapter.LineFragmentAdapter;
-import com.blackberry.howisundergroundtoday.fragments.LinesListFragment;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 
@@ -66,6 +58,7 @@ public class MainActivity extends FragmentActivity {
     private Intent mIntent = null;
     private LineFragmentAdapter mFragmentAdapter = null;
     private FragmentManager mFragmentManager = null;
+    private ViewPager mViewPager = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,8 +67,12 @@ public class MainActivity extends FragmentActivity {
         this.mFragmentManager = getSupportFragmentManager();
         this.mIntent = new Intent(this, XMLDownloaderService.class);
         bindService(mIntent, mServiceConnection, BIND_AUTO_CREATE);
-        this.mFragmentAdapter = new LineFragmentAdapter(this.mFragmentManager,  UndergroundStatusObject.getInstance().getLinesArray());
-    }
+        if (findViewById(R.id.line_details_pager) != null) {
+            this.mFragmentAdapter = new LineFragmentAdapter(this.mFragmentManager, UndergroundStatusObject.getInstance().getLinesArray());
+            this.mViewPager = (ViewPager) findViewById(R.id.line_details_pager);
+            this.mViewPager.setAdapter(mFragmentAdapter);
+        }
+     }
 
     private void flipTheView(final View theViewToBeAnimated,
                              final LineObject line) {

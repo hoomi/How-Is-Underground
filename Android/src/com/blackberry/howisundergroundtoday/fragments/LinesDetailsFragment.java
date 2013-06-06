@@ -5,8 +5,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
+import com.blackberry.howisundergroundtoday.tools.Logger;
 
 import java.util.HashMap;
 
@@ -26,7 +29,7 @@ public class LinesDetailsFragment extends Fragment {
      */
     public static LinesDetailsFragment newInstance(LineObject line) {
         if (line == null) {
-            return new LinesDetailsFragment(new LineObject());
+            return new LinesDetailsFragment();
         }
         int key = line.getLineId();
         LinesDetailsFragment lineFragment = null;
@@ -43,6 +46,16 @@ public class LinesDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.linedetailsfragment, null, false);
+        TextView tv = (TextView) v.findViewById(R.id.lineTitleTextview);
+        tv.setText(this.line.getLineName());
+        tv = (TextView) v.findViewById(R.id.lineStatusTextView);
+        tv.setText(this.line.getLineStatus().getStatusCssClass());
+        tv = (TextView) v.findViewById(R.id.lineStatusDetails);
+        tv.setText(this.line.getLineStatusDetails());
+        Logger.i(LinesDetailsFragment.class, this.line.getLineColor() + " line color");
+        (v.findViewById(R.id.parent_RelativeLayout)).setBackgroundColor(getResources().getColor(this.line.getLineColor()));
+        ImageView iv = (ImageView) v.findViewById(R.id.lineIconImageview);
+        iv.setImageResource(line.getLineStatus().getStatusResoureImage());
         return v;
     }
 
@@ -53,6 +66,10 @@ public class LinesDetailsFragment extends Fragment {
 
     public LinesDetailsFragment(LineObject line) {
         this.line = line;
+    }
+
+    public LinesDetailsFragment() {
+        this.line = new LineObject();
     }
 
     public void setLine(LineObject line) {
