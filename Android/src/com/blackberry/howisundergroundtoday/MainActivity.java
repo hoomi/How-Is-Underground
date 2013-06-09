@@ -1,25 +1,26 @@
 package com.blackberry.howisundergroundtoday;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
+import android.widget.FrameLayout;
 import com.blackberry.howisundergroundtoday.adapter.LineFragmentAdapter;
+import com.blackberry.howisundergroundtoday.fragments.LinesDetailsFragment;
+import com.blackberry.howisundergroundtoday.fragments.LinesListFragment;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
 import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 
 public class MainActivity extends FragmentActivity {
+    private final static String VIEW_PAGER_ITEM_KEY = "view_pager_item";
     private final Handler mHandler = new Handler() {
 
         @Override
@@ -55,8 +56,9 @@ public class MainActivity extends FragmentActivity {
     private LineFragmentAdapter mFragmentAdapter = null;
     private FragmentManager mFragmentManager = null;
     private ViewPager mViewPager = null;
-    private final static String VIEW_PAGER_ITEM_KEY = "view_pager_item";
     private int selectedLineIndex = 0;
+    private FrameLayout mFrameLayout = null;
+    private LinesListFragment mLinesListFragment = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,58 +75,30 @@ public class MainActivity extends FragmentActivity {
             this.mViewPager = (ViewPager) findViewById(R.id.line_details_pager);
             this.mViewPager.setAdapter(mFragmentAdapter);
             this.mViewPager.setCurrentItem(this.selectedLineIndex);
+        } else if (findViewById(R.id.fragment_container_FrameLayout) != null) {
+            //TODO fix the issue with nultiple istance of LinesListFragment
+            this.mLinesListFragment = new LinesListFragment();
+            this.mFragmentManager.beginTransaction().add(R.id.fragment_container_FrameLayout, this.mLinesListFragment, "listFragment").commit();
         }
-     }
+    }
 
-    private void flipTheView(final View theViewToBeAnimated,
-                             final LineObject line) {
-        final View lineStatus = theViewToBeAnimated
-                .findViewById(R.id.linestatustextview);
-        final View lineName = theViewToBeAnimated
-                .findViewById(R.id.linenametextview);
-        final boolean flipped = line.isLineShowingStatus();
-        float startingDegree = flipped ? 180 : 0;
-        float endingDegree = flipped ? 0 : 180;
-        float startingAlpha = flipped ? 1 : 0;
-        float endingAlpha = flipped ? 0 : 1;
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.playTogether(ObjectAnimator.ofFloat(lineName, View.ROTATION_X,
-                startingDegree, endingDegree), ObjectAnimator.ofFloat(
-                lineStatus, View.ROTATION_X, endingDegree, startingDegree),
-                ObjectAnimator.ofFloat(lineName, View.ALPHA, endingAlpha,
-                        startingAlpha), ObjectAnimator.ofFloat(lineStatus,
-                View.ALPHA, startingAlpha, endingAlpha));
-        animSet.setDuration(1000);
-        animSet.setInterpolator(new DecelerateInterpolator());
-        animSet.addListener(new AnimatorListenerAdapter() {
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-                super.onAnimationCancel(animation);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                if (!flipped) {
-
-                }
-                line.setLineShowingStatus(!flipped);
-            }
-
-            @Override
-            public void onAnimationStart(Animator animation) {
-                if (flipped) {
-                    lineStatus.setVisibility(View.GONE);
-                    lineName.setVisibility(View.VISIBLE);
-                } else {
-                    lineStatus.setVisibility(View.VISIBLE);
-                }
-                super.onAnimationStart(animation);
-            }
-
-        });
-        animSet.start();
+    /**
+     * Changes the fragment in the viewAdapter to the correct fragment
+     */
+    public void changeFragmentDetails(int index) {
+        // If the index is greater negative or greater than the length of the strings
+        if (index < 0 && index >= this.mFragmentAdapter.getCount()) {
+            return;
+        }
+        if (this.mViewPager != null) {
+            this.mViewPager.setCurrentItem(index);
+        } else {
+            LineObject lo = UndergroundStatusObject.getInstance().getLinesArray().get(index);
+            FragmentTransaction ft = this.mFragmentManager.beginTransaction();
+            ft.add(R.id.fragment_container_FrameLayout, LinesDetailsFragment.newInstance(lo), lo.getLineName());
+            ft.addToBackStack(lo.getLineName());
+            ft.commit();
+        }
     }
 
     @Override

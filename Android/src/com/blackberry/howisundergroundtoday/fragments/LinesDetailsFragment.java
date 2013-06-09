@@ -74,6 +74,7 @@ public class LinesDetailsFragment extends Fragment {
     }
 
     public LinesDetailsFragment() {
+        super();
     }
 
     public void setLine(LineObject line) {
