@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
@@ -46,22 +47,26 @@ public class LinesDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.linedetailsfragment, null, false);
-        TextView tv = (TextView) v.findViewById(R.id.lineTitleTextview);
-        tv.setText(this.line.getLineName());
-        tv = (TextView) v.findViewById(R.id.lineStatusTextView);
-        tv.setText(this.line.getLineStatus().getStatusCssClass());
-        tv = (TextView) v.findViewById(R.id.lineStatusDetails);
-        tv.setText(this.line.getLineStatusDetails());
-        Logger.i(LinesDetailsFragment.class, this.line.getLineColor() + " line color");
-        (v.findViewById(R.id.parent_RelativeLayout)).setBackgroundColor(getResources().getColor(this.line.getLineColor()));
-        ImageView iv = (ImageView) v.findViewById(R.id.lineIconImageview);
-        iv.setImageResource(line.getLineStatus().getStatusResoureImage());
+        if (this.line != null) {
+            TextView tv = (TextView) v.findViewById(R.id.lineTitleTextview);
+            tv.setText(this.line.getLineName());
+            tv = (TextView) v.findViewById(R.id.lineStatusTextView);
+            tv.setText(this.line.getLineStatus().getStatusCssClass());
+            tv = (TextView) v.findViewById(R.id.lineStatusDetails);
+            tv.setText(this.line.getLineStatusDetails());
+            (v.findViewById(R.id.parent_RelativeLayout)).setBackgroundColor(getResources().getColor(this.line.getLineColor()));
+            ImageView iv = (ImageView) v.findViewById(R.id.lineIconImageview);
+            iv.setImageResource(line.getLineStatus().getStatusResoureImage());
+        }
         return v;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            this.line = (LineObject) savedInstanceState.getParcelable("lineObject");
+        }
     }
 
     public LinesDetailsFragment(LineObject line) {
@@ -69,10 +74,15 @@ public class LinesDetailsFragment extends Fragment {
     }
 
     public LinesDetailsFragment() {
-        this.line = new LineObject();
     }
 
     public void setLine(LineObject line) {
         this.line = line;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable("lineObject" , this.line);
+        super.onSaveInstanceState(outState);
     }
 }

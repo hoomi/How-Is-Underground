@@ -7,11 +7,9 @@ import android.animation.ObjectAnimator;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.res.Configuration;
 import android.graphics.drawable.AnimationDrawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
+import android.os.*;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -28,9 +26,7 @@ public class MainActivity extends FragmentActivity {
         public void handleMessage(Message msg) {
             if (msg.what == 0) {
                 String message = (String) msg.obj;
-                if (message
-                        .equalsIgnoreCase(XMLDownloaderService.MESSAGE_PARSED)) {
-//                    myAdapter.notifyDataSetChanged();
+                if (message.equalsIgnoreCase(XMLDownloaderService.MESSAGE_PARSED)) {
                 }
             }
             super.handleMessage(msg);
@@ -59,6 +55,8 @@ public class MainActivity extends FragmentActivity {
     private LineFragmentAdapter mFragmentAdapter = null;
     private FragmentManager mFragmentManager = null;
     private ViewPager mViewPager = null;
+    private final static String VIEW_PAGER_ITEM_KEY = "view_pager_item";
+    private int selectedLineIndex = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,10 +65,14 @@ public class MainActivity extends FragmentActivity {
         this.mFragmentManager = getSupportFragmentManager();
         this.mIntent = new Intent(this, XMLDownloaderService.class);
         bindService(mIntent, mServiceConnection, BIND_AUTO_CREATE);
+        if (savedInstanceState != null) {
+            this.selectedLineIndex = savedInstanceState.getInt(VIEW_PAGER_ITEM_KEY);
+        }
         if (findViewById(R.id.line_details_pager) != null) {
             this.mFragmentAdapter = new LineFragmentAdapter(this.mFragmentManager, UndergroundStatusObject.getInstance().getLinesArray());
             this.mViewPager = (ViewPager) findViewById(R.id.line_details_pager);
             this.mViewPager.setAdapter(mFragmentAdapter);
+            this.mViewPager.setCurrentItem(this.selectedLineIndex);
         }
      }
 
@@ -132,5 +134,14 @@ public class MainActivity extends FragmentActivity {
         stopService(mIntent);
         super.onDestroy();
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        if (this.mViewPager != null) {
+            this.selectedLineIndex = this.mViewPager.getCurrentItem();
+        }
+        outState.putInt(VIEW_PAGER_ITEM_KEY, this.selectedLineIndex);
+        super.onSaveInstanceState(outState);
     }
 }

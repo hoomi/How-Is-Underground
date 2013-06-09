@@ -1,5 +1,7 @@
 package com.blackberry.howisundergroundtoday.objects;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
@@ -8,7 +10,7 @@ import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 
-public class LineObject implements ParserInterface {
+public class LineObject implements ParserInterface, Parcelable {
 
     public final static String XML_TAG_NAME = "LineStatus";
     private final static String ID_ATTR = "ID";
@@ -226,5 +228,15 @@ public class LineObject implements ParserInterface {
         this.lineStatus.parse(node);
 
         return this;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+       parcel.writeValue(this);
     }
 }
