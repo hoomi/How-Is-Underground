@@ -21,6 +21,7 @@ import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 
 public class MainActivity extends FragmentActivity {
     private final static String VIEW_PAGER_ITEM_KEY = "view_pager_item";
+    private final static String BEEN_PORTRAIT_KEY = "has_been_portrait";
     private final Handler mHandler = new Handler() {
 
         @Override
@@ -59,6 +60,8 @@ public class MainActivity extends FragmentActivity {
     private int selectedLineIndex = 0;
     private FrameLayout mFrameLayout = null;
     private LinesListFragment mLinesListFragment = null;
+    private boolean mPortrait = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +71,8 @@ public class MainActivity extends FragmentActivity {
         this.mIntent = new Intent(this, XMLDownloaderService.class);
         bindService(mIntent, mServiceConnection, BIND_AUTO_CREATE);
         if (savedInstanceState != null) {
-            this.selectedLineIndex = savedInstanceState.getInt(VIEW_PAGER_ITEM_KEY);
+            this.selectedLineIndex = savedInstanceState.getInt(VIEW_PAGER_ITEM_KEY, 0);
+            this.mPortrait = savedInstanceState.getBoolean(BEEN_PORTRAIT_KEY, false);
         }
         if (findViewById(R.id.line_details_pager) != null) {
             this.mFragmentAdapter = new LineFragmentAdapter(this.mFragmentManager, UndergroundStatusObject.getInstance().getLinesArray());
@@ -76,9 +80,11 @@ public class MainActivity extends FragmentActivity {
             this.mViewPager.setAdapter(mFragmentAdapter);
             this.mViewPager.setCurrentItem(this.selectedLineIndex);
         } else if (findViewById(R.id.fragment_container_FrameLayout) != null) {
-            //TODO fix the issue with nultiple istance of LinesListFragment
-            this.mLinesListFragment = new LinesListFragment();
-            this.mFragmentManager.beginTransaction().add(R.id.fragment_container_FrameLayout, this.mLinesListFragment, "listFragment").commit();
+            if (!this.mPortrait) {
+                this.mPortrait = true;
+                this.mLinesListFragment = new LinesListFragment();
+                this.mFragmentManager.beginTransaction().add(R.id.fragment_container_FrameLayout, this.mLinesListFragment, "listFragment").commit();
+            }
         }
     }
 
@@ -99,6 +105,7 @@ public class MainActivity extends FragmentActivity {
             ft.addToBackStack(lo.getLineName());
             ft.commit();
         }
+        this.selectedLineIndex = index;
     }
 
     @Override
@@ -115,6 +122,7 @@ public class MainActivity extends FragmentActivity {
         if (this.mViewPager != null) {
             this.selectedLineIndex = this.mViewPager.getCurrentItem();
         }
+        outState.putBoolean(BEEN_PORTRAIT_KEY, this.mPortrait);
         outState.putInt(VIEW_PAGER_ITEM_KEY, this.selectedLineIndex);
         super.onSaveInstanceState(outState);
     }
