@@ -22,6 +22,18 @@ import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 public class MainActivity extends FragmentActivity {
     private final static String VIEW_PAGER_ITEM_KEY = "view_pager_item";
     private final static String BEEN_PORTRAIT_KEY = "has_been_portrait";
+    /**
+     * Called when the activity is first created.
+     */
+    private XMLDownloaderService mXMLServiceDownload = null;
+    private Intent mIntent = null;
+    private LineFragmentAdapter mFragmentAdapter = null;
+    private FragmentManager mFragmentManager = null;
+    private ViewPager mViewPager = null;
+    private int selectedLineIndex = 0;
+    private FrameLayout mFrameLayout = null;
+    private LinesListFragment mLinesListFragment = null;
+    private boolean mPortrait = false;
     private final Handler mHandler = new Handler() {
 
         @Override
@@ -29,6 +41,11 @@ public class MainActivity extends FragmentActivity {
             if (msg.what == 0) {
                 String message = (String) msg.obj;
                 if (message.equalsIgnoreCase(XMLDownloaderService.MESSAGE_PARSED)) {
+                    if (mFragmentAdapter != null) {
+                        mFragmentAdapter.setLineObjects(UndergroundStatusObject.getInstance().getLinesArray());
+                    } else if (mLinesListFragment != null) {
+                        mLinesListFragment.notifyDataSetChanged();
+                    }
                 }
             }
             super.handleMessage(msg);
@@ -48,19 +65,6 @@ public class MainActivity extends FragmentActivity {
         public void onServiceDisconnected(ComponentName componentName) {
         }
     };
-    /**
-     * Called when the activity is first created.
-     */
-    AnimationDrawable animation;
-    private XMLDownloaderService mXMLServiceDownload = null;
-    private Intent mIntent = null;
-    private LineFragmentAdapter mFragmentAdapter = null;
-    private FragmentManager mFragmentManager = null;
-    private ViewPager mViewPager = null;
-    private int selectedLineIndex = 0;
-    private FrameLayout mFrameLayout = null;
-    private LinesListFragment mLinesListFragment = null;
-    private boolean mPortrait = false;
 
 
     @Override

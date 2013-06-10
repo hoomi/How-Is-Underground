@@ -100,7 +100,9 @@ public class LinesListFragment extends Fragment implements AdapterView.OnItemCli
         animSet.start();
     }
 
-
-
-
+    public void notifyDataSetChanged () {
+        this.mLineAdapter.clear();
+        this.mLineAdapter.addAll(UndergroundStatusObject.getInstance().getLinesArray());
+        this.mLineAdapter.notifyDataSetChanged();
+    }
 }

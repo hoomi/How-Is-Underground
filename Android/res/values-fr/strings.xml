@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Comment c\'est Underground aujourd\'hui?</string>
+    <string name="cancelled_string">annulé</string>
+    <string name="internet_connection_check_string">vérifier une connexion internet</string>
+    <string name="contacting_tfl_string">raccordement...</string>
+    <string name="preparing_linestatus_string">préparation....</string>
+    <string name="error_occured_string">An Error Occured</string>
+    <string name="sucessful_download_string">terminé!!!!</string>
+    <string name="used_cache_string">Pas de connexion Internet. Données mises en cache a été utilisée. Les données peuvent être imprécis </string>
+    <string name="internet_connection_unavailable_error_string">Pas de connexion Internet. Impossible de mettre à jour</string>
+    <string name="internet_connection_roaming_disabled_error_string"></string>
+</resources>

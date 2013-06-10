@@ -11,6 +11,7 @@ import com.blackberry.howisundergroundtoday.objects.LineObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class LineFragmentAdapter extends FragmentPagerAdapter {
     private ArrayList<LineObject> linesList = null;
@@ -38,5 +39,10 @@ public class LineFragmentAdapter extends FragmentPagerAdapter {
             return this.linesList.size();
         }
         return 0;
+    }
+
+    public void setLineObjects(List<LineObject> lineObjects) {
+        this.linesList = (ArrayList<LineObject>) lineObjects;
+        this.notifyDataSetChanged();
     }
 }

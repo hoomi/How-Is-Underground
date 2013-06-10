@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
-import com.blackberry.howisundergroundtoday.tools.Logger;
 
 import java.util.HashMap;
 
@@ -83,7 +81,7 @@ public class LinesDetailsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable("lineObject" , this.line);
+        outState.putParcelable("lineObject", this.line);
         super.onSaveInstanceState(outState);
     }
 }

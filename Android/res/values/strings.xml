@@ -7,7 +7,7 @@
     <string name="preparing_linestatus_string">Preparing....</string>
     <string name="error_occured_string">An Error Occured</string>
     <string name="sucessful_download_string">Finished!!!!</string>
-    <string name="used_cache_string">No Internet Connection. Cached data was used. Data may be inacurate</string>
+    <string name="used_cache_string">No Internet Connection. Cached data was used. Data may be inaccurate</string>
     <string name="internet_connection_unavailable_error_string">No internet connection. Unable to update</string>
     <string name="internet_connection_roaming_disabled_error_string"></string>
 </resources>
