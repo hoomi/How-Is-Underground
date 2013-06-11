@@ -42,21 +42,6 @@ public class LineAdapter extends ArrayAdapter<LineObject> {
         holder.lineStatus.setText(lo.getLineStatus().getStatusDescription());
         holder.background.setBackgroundColor(getContext().getResources().getColor(lo.getLineColor()));
         holder.lineName.setText(lo.getLineName());
-        if (lo.isLineShowingStatus()) {
-            holder.lineStatus.setVisibility(View.VISIBLE);
-            holder.lineName.setVisibility(View.GONE);
-            holder.lineName.setAlpha(0);
-            holder.lineStatus.setAlpha(1);
-            holder.lineName.setRotationX(180);
-            holder.lineStatus.setRotationX(0);
-        } else {
-            holder.lineName.setAlpha(1);
-            holder.lineStatus.setAlpha(0);
-            holder.lineStatus.setVisibility(View.GONE);
-            holder.lineName.setVisibility(View.VISIBLE);
-            holder.lineName.setRotationX(0);
-            holder.lineStatus.setRotationX(180);
-        }
         convertView.setTag(holder);
         return convertView;
     }

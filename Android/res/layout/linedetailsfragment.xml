@@ -1,41 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/parent_RelativeLayout">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+    >
 
-    <TextView
-        android:id="@+id/lineTitleTextview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ></TextView>
+        android:layout_height="match_parent"
+        android:id="@+id/parent_RelativeLayout"
+        android:padding="10dp">
 
-    <LinearLayout
-        android:id="@+id/lineStatusAndImageLinearlayout"
-        android:layout_height="fill_parent"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_below="@id/lineTitleTextview"
-        android:layout_alignParentLeft="true">
+        <TextView
+            android:id="@+id/lineTitleTextview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:gravity="center_horizontal"
+            android:textStyle="italic"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/lineStatusTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.7"></TextView>
+            android:layout_below="@id/lineTitleTextview"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
         <ImageView
             android:id="@+id/lineIconImageview"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/lineStatusTextView"/>
+
+        <TextView
+            android:id="@+id/lineStatusDetails"
+            android:layout_height="fill_parent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.3"></ImageView>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/lineStatusDetails"
-        android:layout_height="fill_parent"
-        android:layout_width="match_parent"
-        android:layout_below="@id/lineStatusAndImageLinearlayout"></TextView>
-</RelativeLayout>
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@android:color/white"
+            android:layout_below="@id/lineIconImageview"/>
+    </RelativeLayout>
+</ScrollView>

@@ -1,5 +1,7 @@
 package com.blackberry.howisundergroundtoday.tools;
 
+import android.os.Build;
+
 import java.io.*;
 
 /**
@@ -68,9 +70,9 @@ public class FileHelper {
      */
     public static boolean doesTheFileExist(String path) {
     	File file = new File(path);
-    	if (file.exists() && file.getTotalSpace() > 0) {
-			return true;
-		}
+        if (file.exists() && file.length() > 1000) {
+            return true;
+        }
     	return false;
     }
 }

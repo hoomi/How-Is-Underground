@@ -9,5 +9,9 @@
     <string name="sucessful_download_string">terminé!!!!</string>
     <string name="used_cache_string">Pas de connexion Internet. Données mises en cache a été utilisée. Les données peuvent être imprécis </string>
     <string name="internet_connection_unavailable_error_string">Pas de connexion Internet. Impossible de mettre à jour</string>
+    <string name="good_service_string">bon service</string>
+    <string name="minor_delays_string">retards mineurs</string>
+    <string name="severe_delays_string">de graves retards</string>
+    <string name="part_closure_string">fermeture de la partie</string>
     <string name="internet_connection_roaming_disabled_error_string"></string>
 </resources>

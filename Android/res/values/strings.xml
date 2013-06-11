@@ -9,5 +9,9 @@
     <string name="sucessful_download_string">Finished!!!!</string>
     <string name="used_cache_string">No Internet Connection. Cached data was used. Data may be inaccurate</string>
     <string name="internet_connection_unavailable_error_string">No internet connection. Unable to update</string>
+    <string name="good_service_string">Good Service</string>
+    <string name="minor_delays_string">Minor Delays</string>
+    <string name="severe_delays_string">Sever Delays</string>
+    <string name="part_closure_string">Part Closure</string>
     <string name="internet_connection_roaming_disabled_error_string"></string>
 </resources>

@@ -49,7 +49,7 @@ public class LinesDetailsFragment extends Fragment {
             TextView tv = (TextView) v.findViewById(R.id.lineTitleTextview);
             tv.setText(this.line.getLineName());
             tv = (TextView) v.findViewById(R.id.lineStatusTextView);
-            tv.setText(this.line.getLineStatus().getStatusCssClass());
+            tv.setText(this.line.getLineStatus().getTranslatedStatusDescription(getActivity()));
             tv = (TextView) v.findViewById(R.id.lineStatusDetails);
             tv.setText(this.line.getLineStatusDetails());
             (v.findViewById(R.id.parent_RelativeLayout)).setBackgroundColor(getResources().getColor(this.line.getLineColor()));

@@ -1,5 +1,6 @@
 package com.blackberry.howisundergroundtoday.objects;
 
+import android.content.Context;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
@@ -132,4 +133,17 @@ public class StatusObject implements ParserInterface {
         return this;
     }
 
+    public String getTranslatedStatusDescription (Context context) {
+        if (this.statusId.equalsIgnoreCase("GS")) {
+            return context.getString(R.string.good_service_string);
+        } else if (this.statusId.equalsIgnoreCase("MD")) {
+            return context.getString(R.string.minor_delays_string);
+        } else if (this.statusId.equalsIgnoreCase("SD")) {
+            return context.getString(R.string.severe_delays_string);
+        } else if (this.statusId.equalsIgnoreCase("PC")) {
+            return context.getString(R.string.part_closure_string);
+        } else {
+            return this.statusDescription;
+        }
+    }
 }
