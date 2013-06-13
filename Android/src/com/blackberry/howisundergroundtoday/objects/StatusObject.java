@@ -1,13 +1,16 @@
 package com.blackberry.howisundergroundtoday.objects;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class StatusObject implements ParserInterface {
+public class StatusObject implements ParserInterface, Parcelable {
 
     private final static String CSSCLASS_ATTR = "CssClass";
     private final static String DESCRIPTION_ATTR = "Description";
@@ -23,7 +26,43 @@ public class StatusObject implements ParserInterface {
     private String statusId;
     private boolean statusIsActive;
     private int statusResoureImage;
+    public static final Parcelable.Creator<StatusObject> CREATOR
+            = new Parcelable.Creator<StatusObject>() {
+        public StatusObject createFromParcel(Parcel in) {
+            return new StatusObject(in);
+        }
 
+        public StatusObject[] newArray(int size) {
+            return new StatusObject[size];
+        }
+    };
+
+    private StatusObject(Parcel in) {
+        Bundle b = in.readBundle();
+        this.statusDescription = b.getString(DESCRIPTION_ATTR, "Good Service");
+        this.setStatusId(b.getString(ID_ATTR, GOODSERVICE_ID));
+        this.statusCssClass = b.getString(CSSCLASS_ATTR, "GoodService");
+        this.statusIsActive = b.getBoolean(ISACTIVE_ATTR, true);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        Bundle b = new Bundle();
+        b.putString(CSSCLASS_ATTR, this.statusCssClass);
+        b.putString(DESCRIPTION_ATTR, this.statusDescription);
+        b.putString(ID_ATTR, this.statusId);
+        b.putBoolean(ISACTIVE_ATTR, this.statusIsActive);
+        parcel.writeBundle(b);
+    }
+
+    /**
+     * Empty constructor
+     */
     public StatusObject() {
         super();
         this.statusCssClass = "GoodService";

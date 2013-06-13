@@ -1,31 +1,72 @@
 package com.blackberry.howisundergroundtoday.objects;
 
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.blackberry.howisundergroundtoday.tools.Logger;
 import com.blackberry.howisundergroundtoday.tools.ParserInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class BranchDistruptionObject implements ParserInterface {
+public class BranchDistruptionObject implements ParserInterface, Parcelable {
 	private final static String ID_ATTR = "ID";
 	private final static String NAME_ATTR = "Name";
 	private final static String STATIONFROM_NODE = "StationFrom";
 	private final static String STATIONTO_NODE = "StationTo";
 	public final static String XML_TAG_NAME = "BranchDisruption";
+	public final static String FROM_ID_KEY = "From_ID";
+	public final static String TO_ID_KEY = "To_ID";
 
 	private int bdStationFromId;
 	private String bdStationFromName;
 	private int bdStationToId;
 	private String bdStationToName;
-	
-	public BranchDistruptionObject() {
-		super();
-		this.bdStationFromId = -1;
-		this.bdStationToId = -1;
-		this.bdStationFromName = "";
-		this.bdStationToName = "";
-	}
+    public static final Parcelable.Creator<BranchDistruptionObject> CREATOR
+            = new Parcelable.Creator<BranchDistruptionObject>() {
+        public BranchDistruptionObject createFromParcel(Parcel in) {
+            return new BranchDistruptionObject(in);
+        }
 
-	/**
+        public BranchDistruptionObject[] newArray(int size) {
+            return new BranchDistruptionObject[size];
+        }
+    };
+	
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        Bundle b = new Bundle();
+        b.putInt(FROM_ID_KEY, this.bdStationFromId);
+        b.putInt(TO_ID_KEY, this.bdStationToId);
+        b.putString(STATIONFROM_NODE,this.bdStationFromName);
+        b.putString(STATIONTO_NODE,this.bdStationToName);
+    }
+
+    private BranchDistruptionObject(Parcel in) {
+        Bundle b = in.readBundle();
+        this.bdStationFromId = b.getInt(FROM_ID_KEY, -1);
+        this.bdStationToId = b.getInt(TO_ID_KEY, -1);
+        this.bdStationFromName = b.getString(STATIONFROM_NODE, "");
+        this.bdStationToName = b.getString(STATIONTO_NODE, "");
+    }
+
+    /**
+     * Empty constructor
+     */
+    public BranchDistruptionObject() {
+        super();
+        this.bdStationFromId = -1;
+        this.bdStationToId = -1;
+        this.bdStationFromName = "";
+        this.bdStationToName = "";
+    }
+
+    /**
 	 * @return the bdStationFromId
 	 */
 	public int getBdStationFromId() {

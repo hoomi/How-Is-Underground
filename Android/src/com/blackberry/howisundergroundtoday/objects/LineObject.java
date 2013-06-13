@@ -1,5 +1,6 @@
 package com.blackberry.howisundergroundtoday.objects;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.blackberry.howisundergroundtoday.R;
@@ -16,6 +17,9 @@ public class LineObject implements ParserInterface, Parcelable {
     private final static String ID_ATTR = "ID";
     private final static String NAME_ATTR = "Name";
     private final static String STATUSDETAILS_ATTR = "StatusDetails";
+    private final static String STATUS_ID_KEY = "StatusID";
+    private final static String STATUS_KEY = "Status";
+    private final static String BRANCH_DISTRUPTION_KEY = "BranchDistruption";
     private ArrayList<BranchDistruptionObject> lineBranchDistruptions = null;
     private int lineColor;
     private int lineId;
@@ -24,7 +28,47 @@ public class LineObject implements ParserInterface, Parcelable {
     private StatusObject lineStatus;
     private String lineStatusDetails;
     private int lineStatusId;
+    public static final Parcelable.Creator<LineObject> CREATOR
+            = new Parcelable.Creator<LineObject>() {
+        public LineObject createFromParcel(Parcel in) {
+            return new LineObject(in);
+        }
 
+        public LineObject[] newArray(int size) {
+            return new LineObject[size];
+        }
+    };
+
+    private LineObject(Parcel in) {
+        Bundle b = in.readBundle();
+        this.lineName = b.getString(NAME_ATTR, "Unknown");
+        this.setLineId(b.getInt(ID_ATTR, -1));
+        this.lineStatusId = b.getInt(STATUS_ID_KEY, 0);
+        this.lineStatusDetails = b.getString(STATUSDETAILS_ATTR, "");
+        this.lineStatus = (StatusObject) b.getParcelable(STATUS_KEY);
+        this.lineBranchDistruptions = b.getParcelableArrayList(BRANCH_DISTRUPTION_KEY);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        Bundle b = new Bundle();
+        b.putInt(ID_ATTR, this.lineId);
+        b.putString(NAME_ATTR, this.lineName);
+        b.putString(STATUSDETAILS_ATTR, this.lineStatusDetails);
+        b.putInt(STATUS_ID_KEY, this.lineStatusId);
+        b.putParcelable(STATUS_KEY, this.lineStatus);
+        b.putParcelableArrayList(BRANCH_DISTRUPTION_KEY, this.lineBranchDistruptions);
+        out.writeBundle(b);
+    }
+
+    /**
+     * Constructor
+     */
     public LineObject() {
         super();
         this.lineName = "Unknown";
@@ -222,21 +266,11 @@ public class LineObject implements ParserInterface, Parcelable {
             } while (node != null);
         }
         Element elm = (Element) lineElement.getElementsByTagName("Line").item(0);
-        this.setLineName(elm.getAttribute(NAME_ATTR));
+        this.lineName = elm.getAttribute(NAME_ATTR);
         this.setLineId(Integer.parseInt(elm.getAttribute(ID_ATTR)));
         node = lineElement.getElementsByTagName("Status").item(0);
         this.lineStatus.parse(node);
 
         return this;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-       parcel.writeValue(this);
     }
 }
