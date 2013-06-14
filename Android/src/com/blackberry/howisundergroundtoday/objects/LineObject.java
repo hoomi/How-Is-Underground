@@ -41,6 +41,7 @@ public class LineObject extends ParserObject {
 
     /**
      * Constructor with a parcel as its argument
+     *
      * @param in
      */
     private LineObject(Parcel in) {

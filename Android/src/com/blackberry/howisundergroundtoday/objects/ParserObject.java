@@ -9,11 +9,15 @@ import org.w3c.dom.Node;
  */
 public abstract class ParserObject implements Parcelable {
 
-    protected ParserObject(Parcel in) {};
+    protected ParserObject(Parcel in) {
+    }
+
+    ;
+
     public abstract ParserObject parse(Node doc);
 
     @Override
-    public  abstract void writeToParcel(Parcel parcel, int i);
+    public abstract void writeToParcel(Parcel parcel, int i);
 
     @Override
     public int describeContents() {

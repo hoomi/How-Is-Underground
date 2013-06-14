@@ -3,7 +3,6 @@ package com.blackberry.howisundergroundtoday;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -22,18 +21,6 @@ import com.blackberry.howisundergroundtoday.objects.UndergroundStatusObject;
 public class MainActivity extends FragmentActivity {
     private final static String VIEW_PAGER_ITEM_KEY = "view_pager_item";
     private final static String BEEN_PORTRAIT_KEY = "has_been_portrait";
-    /**
-     * Called when the activity is first created.
-     */
-    private XMLDownloaderService mXMLServiceDownload = null;
-    private Intent mIntent = null;
-    private LineFragmentAdapter mFragmentAdapter = null;
-    private FragmentManager mFragmentManager = null;
-    private ViewPager mViewPager = null;
-    private int selectedLineIndex = 0;
-    private FrameLayout mFrameLayout = null;
-    private LinesListFragment mLinesListFragment = null;
-    private boolean mPortrait = false;
     private final Handler mHandler = new Handler() {
 
         @Override
@@ -65,7 +52,18 @@ public class MainActivity extends FragmentActivity {
         public void onServiceDisconnected(ComponentName componentName) {
         }
     };
-
+    /**
+     * Called when the activity is first created.
+     */
+    private XMLDownloaderService mXMLServiceDownload = null;
+    private Intent mIntent = null;
+    private LineFragmentAdapter mFragmentAdapter = null;
+    private FragmentManager mFragmentManager = null;
+    private ViewPager mViewPager = null;
+    private int selectedLineIndex = 0;
+    private FrameLayout mFrameLayout = null;
+    private LinesListFragment mLinesListFragment = null;
+    private boolean mPortrait = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +103,9 @@ public class MainActivity extends FragmentActivity {
         } else {
             LineObject lo = UndergroundStatusObject.getInstance().getLinesArray().get(index);
             FragmentTransaction ft = this.mFragmentManager.beginTransaction();
+
+//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.setCustomAnimations(R.anim.card_flip_right_in, R.anim.card_flip_right_out, R.anim.card_flip_left_in, R.anim.card_flip_left_out);
             ft.add(R.id.fragment_container_FrameLayout, LinesDetailsFragment.newInstance(lo), lo.getLineName());
             ft.addToBackStack(lo.getLineName());
             ft.commit();

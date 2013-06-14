@@ -14,6 +14,7 @@ import java.util.List;
 public class LineAdapter extends ArrayAdapter<LineObject> {
     private static ViewHolder holder;
     private final Activity parentActivity;
+
     public LineAdapter(Activity parentActivity, int textViewResourceId,
                        List<LineObject> objects) {
         super(parentActivity.getBaseContext(), textViewResourceId, objects);

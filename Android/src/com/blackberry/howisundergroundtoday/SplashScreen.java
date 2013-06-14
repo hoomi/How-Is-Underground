@@ -20,7 +20,7 @@ public class SplashScreen extends Activity {
     private final AsyncTask<Void, Void, Void> splashPlayer = new AsyncTask<Void, Void, Void>() {
         @Override
         protected Void doInBackground(Void... voids) {
-        	mXMLService.setHandler(null);
+            mXMLService.setHandler(null);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

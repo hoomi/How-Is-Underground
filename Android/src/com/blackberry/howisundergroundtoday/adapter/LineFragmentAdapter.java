@@ -1,16 +1,12 @@
 package com.blackberry.howisundergroundtoday.adapter;
 
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 import com.blackberry.howisundergroundtoday.fragments.LinesDetailsFragment;
 import com.blackberry.howisundergroundtoday.objects.LineObject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class LineFragmentAdapter extends FragmentPagerAdapter {

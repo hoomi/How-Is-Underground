@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <rotate
+        android:duration="@integer/card_flip_time_full"
+        android:pivotY="50%"
+        android:pivotX="100%"
+        android:toDegrees="180"
+        android:fromDegrees="0"
+        android:interpolator="@anim/accelerate_decelerate_interpolator"/>
+    <alpha
+        android:duration="@integer/card_flip_time_half"
+        android:fromAlpha="1.0"
+        android:toAlpha="0.0"
+        android:startOffset="@integer/card_flip_time_half"/>
+</set>

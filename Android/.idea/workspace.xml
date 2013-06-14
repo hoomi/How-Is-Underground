@@ -43,6 +43,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -80,7 +81,6 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -90,10 +90,55 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="LineObject.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/LineObject.java">
+      <file leaf-file-name="card_flip_left_in.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/res/anim/card_flip_left_in.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="20" selection-start="3048" selection-end="3048" vertical-scroll-proportion="-8.08" vertical-offset="1328" max-vertical-offset="4794">
+            <state line="13" column="71" selection-start="425" selection-end="425" vertical-scroll-proportion="0.3981982" vertical-offset="0" max-vertical-offset="555">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="card_flip_left_out.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/anim/card_flip_left_out.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="9" column="71" selection-start="367" selection-end="367" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="card_flip_right_in.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/anim/card_flip_right_in.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="13" column="71" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="card_flip_right_out.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/anim/card_flip_right_out.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="4" column="71" selection-start="124" selection-end="188" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="accelerate_decelerate_interpolator.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/anim/accelerate_decelerate_interpolator.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="2" column="35" selection-start="75" selection-end="75" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DecelerateInterpolator.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/interpolators/DecelerateInterpolator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="48" column="29" selection-start="1719" selection-end="1719" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="935">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -101,75 +146,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UndergroundStatusObject.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/UndergroundStatusObject.java">
+      <file leaf-file-name="attrs.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="13" selection-start="248" selection-end="248" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1377">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="42" column="77" selection-start="1875" selection-end="1878" vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="2346">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LinesDetailsFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/fragments/LinesDetailsFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="59" selection-start="1685" selection-end="1685" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1411">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParserObject.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/ParserObject.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="41" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StatusObject.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/StatusObject.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="66" column="18" selection-start="2340" selection-end="2340" vertical-scroll-proportion="-7.4" vertical-offset="937" max-vertical-offset="3298">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AsyncTask.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/Applications/Android/sdk/platforms/android-16/android.jar!/android/os/AsyncTask.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="0" selection-start="2155" selection-end="2155" vertical-scroll-proportion="0.0" vertical-offset="640" max-vertical-offset="952">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Binder.class" pinned="false" current="true" current-in-tab="true">
-        <entry file="jar://$USER_HOME$/Applications/Android/sdk/platforms/android-16/android.jar!/android/os/Binder.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="0" selection-start="1963" selection-end="1963" vertical-scroll-proportion="0.6730769" vertical-offset="555" max-vertical-offset="867">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BranchDistruptionObject.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/BranchDistruptionObject.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="20" selection-start="2087" selection-end="2087" vertical-scroll-proportion="-8.08" vertical-offset="818" max-vertical-offset="2482">
+            <state line="31" column="60" selection-start="1165" selection-end="1196" vertical-scroll-proportion="0.0" vertical-offset="66" max-vertical-offset="731">
               <folding />
             </state>
           </provider>
@@ -194,22 +174,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/MainActivity.java" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/adapter/LineFragmentAdapter.java" />
-        <option value="$PROJECT_DIR$/res/values_fr/strings.xml" />
-        <option value="$PROJECT_DIR$/res/values-de/strings.xml" />
-        <option value="$PROJECT_DIR$/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/res/values-fa/strings.xml" />
-        <option value="$PROJECT_DIR$/res/values-fr/strings.xml" />
-        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/tools/FileHelper.java" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/adapter/LineAdapter.java" />
-        <option value="$PROJECT_DIR$/res/layout/linedetailsfragment.xml" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/fragments/LinesDetailsFragment.java" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/ParserObject.java" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/LineObject.java" />
-        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/BranchDistruptionObject.java" />
         <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/StatusObject.java" />
+        <option value="$PROJECT_DIR$/res/animator/leftin_rightout.xml" />
+        <option value="$PROJECT_DIR$/res/animator/card_flip_left_in.xml" />
+        <option value="$PROJECT_DIR$/res/animator/card_flip_left_out.xml" />
+        <option value="$PROJECT_DIR$/res/animator/card_flip_right_in.xml" />
+        <option value="$PROJECT_DIR$/res/animator/card_flip_right_out.xml" />
+        <option value="$PROJECT_DIR$/res/values/iintegers.xml" />
+        <option value="$PROJECT_DIR$/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/MainActivity.java" />
+        <option value="$PROJECT_DIR$/res/values/attrs.xml" />
+        <option value="$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/interpolators/DecelerateInterpolator.java" />
+        <option value="$PROJECT_DIR$/res/anim/accelerate_decelerate_interpolator.xml" />
+        <option value="$PROJECT_DIR$/res/anim/card_flip_right_out.xml" />
+        <option value="$PROJECT_DIR$/res/anim/card_flip_right_in.xml" />
+        <option value="$PROJECT_DIR$/res/anim/card_flip_left_out.xml" />
+        <option value="$PROJECT_DIR$/res/anim/card_flip_left_in.xml" />
       </list>
     </option>
   </component>
@@ -300,6 +280,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files" />
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -358,7 +341,75 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="objects" />
+              <option name="myItemId" value="interpolators" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="How-Is-Underground" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="How-Is-Underground" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="How-Is-Underground" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="animator" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="How-Is-Underground" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="anim" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -378,9 +429,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files" />
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -399,14 +447,15 @@
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="CNexus4" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Hooman\My_Important_Applications\How-Is-Underground\Android\src\com\blackberry\howisundergroundtoday\interpolators" />
       <recent name="C:\Users\Hooman\My_Important_Applications\How-Is-Underground\Android\res\layout-small-land" />
       <recent name="C:\Users\Hooman\My_Important_Applications\How-Is-Underground\Android\libs" />
     </key>
@@ -633,31 +682,31 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32123798" sideWeight="0.67296994" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32823366" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32123798" sideWeight="0.67296994" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3737486" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.63176066" sideWeight="0.40387374" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.63070077" sideWeight="0.40387374" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32369298" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.6095662" sideWeight="0.59612626" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6718576" sideWeight="0.59612626" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962447" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.47118464" sideWeight="0.39043382" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3259177" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.47118464" sideWeight="0.67408234" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3259177" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32947233" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3991655" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
@@ -724,109 +773,116 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/values-fr/strings.xml">
+    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/fragments/LinesDetailsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="38" selection-start="981" selection-end="981" vertical-scroll-proportion="0.0" vertical-offset="204" max-vertical-offset="374" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/values-fa/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="38" selection-start="962" selection-end="962" vertical-scroll-proportion="0.48135594" vertical-offset="79" max-vertical-offset="374" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="38" selection-start="253" selection-end="253" vertical-scroll-proportion="0.05762712" vertical-offset="68" max-vertical-offset="595">
+        <state line="46" column="59" selection-start="1685" selection-end="1685" vertical-scroll-proportion="0.0" vertical-offset="538" max-vertical-offset="1411">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/tools/FileHelper.java">
+    <entry file="file://$PROJECT_DIR$/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="24" selection-start="2364" selection-end="2364" vertical-scroll-proportion="0.37288135" vertical-offset="1131" max-vertical-offset="1428" />
+        <state line="7" column="51" selection-start="310" selection-end="310" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/adapter/LineAdapter.java">
+    <entry file="file://$PROJECT_DIR$/res/values/colors.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="43" column="50" selection-start="1939" selection-end="1939" vertical-scroll-proportion="0.05762712" vertical-offset="714" max-vertical-offset="1037" />
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="391">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/linedetailsfragment.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/res/values/integers.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="17" selection-start="462" selection-end="462" vertical-scroll-proportion="-3.8" vertical-offset="143" max-vertical-offset="986" />
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Applications/Android/sdk/platforms/android-16/android.jar!/android/widget/RemoteViewsService.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="0" selection-start="860" selection-end="860" vertical-scroll-proportion="0.6542373" vertical-offset="334" max-vertical-offset="629" />
+        <state line="4" column="12" selection-start="171" selection-end="171" vertical-scroll-proportion="0.11724138" vertical-offset="0" max-vertical-offset="580">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/UndergroundStatusObject.java">
+    <entry file="file://$PROJECT_DIR$/res/animator/card_flip_left_out.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="13" selection-start="248" selection-end="248" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1377">
+        <state line="10" column="0" selection-start="361" selection-end="361" vertical-scroll-proportion="0.29310346" vertical-offset="0" max-vertical-offset="580">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="42" column="77" selection-start="1875" selection-end="1878" vertical-scroll-proportion="0.0" vertical-offset="391" max-vertical-offset="2346">
+        <state line="107" column="143" selection-start="5011" selection-end="5011" vertical-scroll-proportion="0.0" vertical-offset="1418" max-vertical-offset="2278">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/fragments/LinesDetailsFragment.java">
+    <entry file="file://$PROJECT_DIR$/res/animator/card_flip_left_in.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="59" selection-start="1685" selection-end="1685" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1411">
+        <state line="5" column="29" selection-start="215" selection-end="215" vertical-scroll-proportion="0.14655173" vertical-offset="0" max-vertical-offset="580">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/ParserObject.java">
+    <entry file="file://$PROJECT_DIR$/res/animator/card_flip_right_in.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="41" selection-start="280" selection-end="280" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="476">
+        <state line="22" column="6" selection-start="726" selection-end="726" vertical-scroll-proportion="0.6448276" vertical-offset="0" max-vertical-offset="580">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/animator/card_flip_right_out.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="0" selection-start="572" selection-end="572" vertical-scroll-proportion="0.46896553" vertical-offset="0" max-vertical-offset="580">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/interpolators/DecelerateInterpolator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="29" selection-start="1719" selection-end="1719" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="935">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/LineObject.java">
+    <entry file="file://$PROJECT_DIR$/res/values/attrs.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="90" column="20" selection-start="3048" selection-end="3048" vertical-scroll-proportion="-8.08" vertical-offset="1328" max-vertical-offset="4794">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/BranchDistruptionObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="20" selection-start="2087" selection-end="2087" vertical-scroll-proportion="-8.08" vertical-offset="818" max-vertical-offset="2482">
+        <state line="31" column="60" selection-start="1165" selection-end="1196" vertical-scroll-proportion="0.0" vertical-offset="66" max-vertical-offset="731">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/blackberry/howisundergroundtoday/objects/StatusObject.java">
+    <entry file="file://$PROJECT_DIR$/res/anim/accelerate_decelerate_interpolator.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="66" column="18" selection-start="2340" selection-end="2340" vertical-scroll-proportion="-7.4" vertical-offset="937" max-vertical-offset="3298">
+        <state line="2" column="35" selection-start="75" selection-end="75" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Applications/Android/sdk/platforms/android-16/android.jar!/android/os/AsyncTask.class">
+    <entry file="file://$PROJECT_DIR$/res/anim/card_flip_right_out.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="0" selection-start="2155" selection-end="2155" vertical-scroll-proportion="0.0" vertical-offset="640" max-vertical-offset="952">
+        <state line="4" column="71" selection-start="124" selection-end="188" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="374">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Applications/Android/sdk/platforms/android-16/android.jar!/android/os/Binder.class">
+    <entry file="file://$PROJECT_DIR$/res/anim/card_flip_right_in.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="0" selection-start="1963" selection-end="1963" vertical-scroll-proportion="0.6730769" vertical-offset="555" max-vertical-offset="867">
+        <state line="13" column="71" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/anim/card_flip_left_out.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="71" selection-start="367" selection-end="367" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/anim/card_flip_left_in.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="71" selection-start="425" selection-end="425" vertical-scroll-proportion="0.3981982" vertical-offset="0" max-vertical-offset="555">
           <folding />
         </state>
       </provider>

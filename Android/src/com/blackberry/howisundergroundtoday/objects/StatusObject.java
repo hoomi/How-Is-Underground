@@ -49,6 +49,7 @@ public class StatusObject extends ParserObject {
 
     /**
      * Constructor with a parcel as its argument
+     *
      * @param in Parcel arguement
      */
     private StatusObject(Parcel in) {
@@ -75,6 +76,7 @@ public class StatusObject extends ParserObject {
 
     /**
      * Return the resource ID for the image of the status
+     *
      * @return integer representing the line image
      */
     public int getStatusResoureImage() {
@@ -172,7 +174,7 @@ public class StatusObject extends ParserObject {
         return this;
     }
 
-    public String getTranslatedStatusDescription (Context context) {
+    public String getTranslatedStatusDescription(Context context) {
         if (this.statusId.equalsIgnoreCase("GS")) {
             return context.getString(R.string.good_service_string);
         } else if (this.statusId.equalsIgnoreCase("MD")) {
