@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.blackberry.howisundergroundtoday.tools.Logger;
-import com.blackberry.howisundergroundtoday.tools.ParserInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class BranchDistruptionObject implements ParserInterface, Parcelable {
+public class BranchDistruptionObject extends ParserObject {
 	private final static String ID_ATTR = "ID";
 	private final static String NAME_ATTR = "Name";
 	private final static String STATIONFROM_NODE = "StationFrom";
@@ -21,6 +20,7 @@ public class BranchDistruptionObject implements ParserInterface, Parcelable {
 	private String bdStationFromName;
 	private int bdStationToId;
 	private String bdStationToName;
+
     public static final Parcelable.Creator<BranchDistruptionObject> CREATOR
             = new Parcelable.Creator<BranchDistruptionObject>() {
         public BranchDistruptionObject createFromParcel(Parcel in) {
@@ -31,12 +31,6 @@ public class BranchDistruptionObject implements ParserInterface, Parcelable {
             return new BranchDistruptionObject[size];
         }
     };
-	
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
@@ -47,7 +41,12 @@ public class BranchDistruptionObject implements ParserInterface, Parcelable {
         b.putString(STATIONTO_NODE,this.bdStationToName);
     }
 
+    /**
+     * Constructor with parcel as argument
+     * @param in
+     */
     private BranchDistruptionObject(Parcel in) {
+        super(in);
         Bundle b = in.readBundle();
         this.bdStationFromId = b.getInt(FROM_ID_KEY, -1);
         this.bdStationToId = b.getInt(TO_ID_KEY, -1);
@@ -59,7 +58,7 @@ public class BranchDistruptionObject implements ParserInterface, Parcelable {
      * Empty constructor
      */
     public BranchDistruptionObject() {
-        super();
+        super(null);
         this.bdStationFromId = -1;
         this.bdStationToId = -1;
         this.bdStationFromName = "";
@@ -95,7 +94,7 @@ public class BranchDistruptionObject implements ParserInterface, Parcelable {
 	}
 
 	@Override
-	public ParserInterface parse(Node doc) {
+	public ParserObject parse(Node doc) {
 		if (doc == null) {
 			return this;
 		}

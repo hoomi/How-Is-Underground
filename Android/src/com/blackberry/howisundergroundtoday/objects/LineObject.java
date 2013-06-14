@@ -5,13 +5,12 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.blackberry.howisundergroundtoday.R;
 import com.blackberry.howisundergroundtoday.tools.Logger;
-import com.blackberry.howisundergroundtoday.tools.ParserInterface;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import java.util.ArrayList;
 
-public class LineObject implements ParserInterface, Parcelable {
+public class LineObject extends ParserObject {
 
     public final static String XML_TAG_NAME = "LineStatus";
     private final static String ID_ATTR = "ID";
@@ -28,6 +27,7 @@ public class LineObject implements ParserInterface, Parcelable {
     private StatusObject lineStatus;
     private String lineStatusDetails;
     private int lineStatusId;
+
     public static final Parcelable.Creator<LineObject> CREATOR
             = new Parcelable.Creator<LineObject>() {
         public LineObject createFromParcel(Parcel in) {
@@ -39,7 +39,12 @@ public class LineObject implements ParserInterface, Parcelable {
         }
     };
 
+    /**
+     * Constructor with a parcel as its argument
+     * @param in
+     */
     private LineObject(Parcel in) {
+        super(in);
         Bundle b = in.readBundle();
         this.lineName = b.getString(NAME_ATTR, "Unknown");
         this.setLineId(b.getInt(ID_ATTR, -1));
@@ -47,11 +52,6 @@ public class LineObject implements ParserInterface, Parcelable {
         this.lineStatusDetails = b.getString(STATUSDETAILS_ATTR, "");
         this.lineStatus = (StatusObject) b.getParcelable(STATUS_KEY);
         this.lineBranchDistruptions = b.getParcelableArrayList(BRANCH_DISTRUPTION_KEY);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class LineObject implements ParserInterface, Parcelable {
      * Constructor
      */
     public LineObject() {
-        super();
+        super(null);
         this.lineName = "Unknown";
         this.lineShowingStatus = false;
         this.lineBranchDistruptions = new ArrayList<BranchDistruptionObject>();
@@ -88,7 +88,7 @@ public class LineObject implements ParserInterface, Parcelable {
      * @param lineResoureImage
      */
     public LineObject(String lineName) {
-        super();
+        super(null);
         this.lineName = lineName;
         this.lineShowingStatus = false;
         this.lineBranchDistruptions = new ArrayList<BranchDistruptionObject>();
@@ -244,7 +244,7 @@ public class LineObject implements ParserInterface, Parcelable {
     }
 
     @Override
-    public ParserInterface parse(Node doc) {
+    public ParserObject parse(Node doc) {
         Element lineElement = (Element) doc;
         if (doc == null) {
             return this;
